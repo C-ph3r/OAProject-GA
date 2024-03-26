@@ -1,0 +1,33 @@
+Project Rules -------------
+• Implement all the necessary functions/elements for the representation of the OP,
+respecting its constraints.
+• Implement at least three different mutation operators
+• Implement at least three different crossover operators
+• Propose a final model (with the specific operators and parameters used) that is the
+result of a grid search of at least 15 runs.
+
+
+Project Evaluation --------
+• Project Report - 20%. In the report you must describe the methodology used,
+provide the literature review of Genetic Operators that you used and present the
+results (with plots) of your final proposed model
+
+• Implementations - 45%. This part of the evaluation corresponds to the quality
+and efficiency of your implementations. Note that quality refers to both the quality
+of your code and the complexity/originality of the genetic operators used.
+
+• Project Methodology and Requirements - 10%. This part of the evaluation
+corresponds to the quality of your methodology with regards to the grid search
+strategies you chose and your overall project organization, as well as your compliance with the rules
+
+• Implementations (competition value) - 15%. This part of the evaluation corresponds to the comparison of your implementations with the ones provided by the
+other groups. You will be given a score based on:
+– The number of operators you implemented in comparison to other groups
+– The complexity of the operators you implemented in comparison to other
+groups
+– The originality of the operators you implemented in comparison to other
+groups
+
+• Model performance (competition value) - 10%. This part of the evaluation
+corresponds to the performance of your final proposed model on the unseen data,
+in comparison to the performance of the models proposed by the other groups.

@@ -1,0 +1,38 @@
+Objective: Maximise Geo earnings
+Create a pipeline that allows the algorithm to learn 
+in the most robust way possible, considering different Geo earning /
+loss that will occur between each areas.
+
+
+Possible areas:
+Dirtmouth (D) - Start and end
+Forgotten Crossroads (FC)
+Greenpath (G)
+Queen's Station (QS)
+Queen's Gardens (QG)
+City Storerooms (CS)
+King’s Station (KS)
+Resting Grounds (RG)
+Distant Village (DV)
+Stag Nest (SN)
+
+
+Rules:
+• All sessions must begin and end in Dirtmouth (D).
+• Your friend is ok with not visiting King’s Station (KS) as long as they visit the
+Distant Village (DV) immediately after Queen’s Station (QS). They say that they
+are ok with this skip because the QS-DV sequence is very hard and tiring, so the
+addition of KS is unnecessary.
+• For similar reasons, City Storerooms (CS) cannot be visited right after Queen’s
+Garden’s (QG).
+• When considering different Geo earning values, know that more often than not
+moving from one area to the next results in a Geo gain and not loss.
+• When trying different Geo earning values, keep in mind that the Geo gained by
+passing from Greenpath (G) to Forgotten Crossroads (FC) must be at least 3.2 %
+less than the minimum between all the other positive Geo gains.
+• The Resting Grounds (RG) can only be reached in the last half of the session.
+• Very important: You are to organize this data in the form of list of lists (i.e., a
+matrix) where each list represents an area and contains the Geo gained by moving
+from that area to all the other areas.
+Note that the goal is to obtain one and only one route! Your friend will always
+take the same route, the one proposed by you!
