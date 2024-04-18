@@ -45,6 +45,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
             # adding the offpring into the offspring population
             offspring.extend([o1, o2])
 
+        # confirm that offspring's length matches the population
+        while len(offspring) > pop_size:
+            offspring.pop()
+
         # if elitism, make sure the elite of the population is inserted into the next generation
         if elitism:
             elite, best_fit = elite_func(population, pop_fit)
