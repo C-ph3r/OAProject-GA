@@ -1,12 +1,19 @@
+import csv
 import random
 from copy import deepcopy
 
 from base.individual import *
 from base.population import evaluate_population_ks_max
 
-def GA(initializer, evaluator, selector, crossover, mutator,
-       pop_size, n_gens, p_xo, p_m):
 
+def GA(initializer, evaluator, selector, crossover, mutator,
+       pop_size, n_gens, p_xo, p_m, elite_func, verbose=False,
+       log_path=None, elitism=True):
+
+    if elite_func is None:
+        raise Exception("Without a proper elite function I cannot work. Humph! *grumpy sounds*")
+
+    # TODO: do i need to think about seeds?
 
     # initializing the gen 0 population:
     population = initializer(pop_size)
@@ -27,7 +34,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
             # choosing between xover and reproduction
             if random.random() < p_xo:
                 # xover
-                o1, o2 = crossover(p1, p2) # TODO: WE STILL NEED TO IMPLEMENT XOVER.
+                o1, o2 = crossover(p1, p2)
             else:
                 # reproduction
                 o1, o2 = deepcopy(p1), deepcopy(p2)
@@ -38,19 +45,27 @@ def GA(initializer, evaluator, selector, crossover, mutator,
             # adding the offpring into the offspring population
             offspring.extend([o1, o2])
 
+        # if elitism, make sure the elite of the population is inserted into the next generation
+        if elitism:
+            elite, best_fit = elite_func(population, pop_fit)
+            offspring[-1] = elite # adding the elite, unchanged into the offspring population
+
         # replacing the current population with the offpsring population
         population = offspring
 
         # evaluating the current population:
         pop_fit = evaluator(population)
 
+        # displaying and logging the generation results
+        new_elite, new_fit = elite_func(population, pop_fit)
+
+        if verbose:
+            print(f'     {gen}       |       {new_fit}       ')
+            print('-' * 32)
+
+        if log_path is not None:
+            with open(log_path, 'a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([gen, new_fit, new_elite])
+
     return population, pop_fit
-
-
-
-
-
-
-
-
-
