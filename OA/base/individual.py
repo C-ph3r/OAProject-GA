@@ -23,7 +23,7 @@ def get_fitness_ks_max(values, volumes, capacity):
     return get_fitness
 
 
-def get_fitness_ks_min(values, volumes, capacity):
+def get_fitness_ks_min(values, volumes, capacity): # TODO: finish/change this
     
     def get_fitness(sol):
         # getting the total value of the items in the solution
