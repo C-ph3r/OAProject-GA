@@ -1,14 +1,16 @@
 import csv
-import random
+import numpy as np
 from copy import deepcopy
-
 from base.individual import *
-from base.population import evaluate_population_ks_max
 
 
 def GA(initializer, evaluator, selector, crossover, mutator,
        pop_size, n_gens, p_xo, p_m, elite_func, verbose=False,
-       log_path=None, elitism=True):
+       log_path=None, elitism=True, seed=0):
+
+    # setting up the seed:
+    random.seed(seed)
+    np.random.seed(seed)
 
     if elite_func is None:
         raise Exception("Without a proper elite function I cannot work. Humph! *grumpy sounds*")
@@ -45,9 +47,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
             # adding the offpring into the offspring population
             offspring.extend([o1, o2])
 
-        # confirm that offspring's length matches the population
+        # making sure offspring population doesnt exceed pop_size
         while len(offspring) > pop_size:
             offspring.pop()
+
 
         # if elitism, make sure the elite of the population is inserted into the next generation
         if elitism:
@@ -70,6 +73,6 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         if log_path is not None:
             with open(log_path, 'a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([gen, new_fit, new_elite])
+                writer.writerow([seed, gen, new_fit, new_elite])
 
     return population, pop_fit
