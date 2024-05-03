@@ -54,5 +54,7 @@ def neighbourhood_mutation(hamming_dist):
 
 
 def test_func():
-    print("hello")
+    print("hello world")
+    print("what")
+    print("quero commitar")
     pass
