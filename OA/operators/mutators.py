@@ -50,3 +50,9 @@ def neighbourhood_mutation(hamming_dist):
         pass
 
     return mutate
+
+
+
+def test_func():
+    print("hello")
+    pass
