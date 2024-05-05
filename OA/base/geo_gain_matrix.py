@@ -11,15 +11,15 @@ import random
 import pandas as pd
 import numpy as np
 
-def generate_matrix(probability_positive_gain:int) -> pd.DataFrame:
+def generate_matrix(probability_positive_gain:int, areas:list) -> pd.DataFrame:
     '''
     Function that creates a randomly generated matrix of GEO gain,
     based on the rules above
-    Input: probability_positive_gain - probability that the GEO gain will be positive
+    Input: areas - list of possible areas to visit
+        probability_positive_gain - probability that the GEO gain will be positive
         Note: This variable is influenced by luck and player skill
     Output: matrix - dataframe of generated GEO values
     '''
-    areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
     
     # Our matrix will be in dataframe format for ease of use
     matrix = pd.DataFrame(index=areas, columns=areas)
@@ -44,5 +44,6 @@ def generate_matrix(probability_positive_gain:int) -> pd.DataFrame:
     return matrix
 
 # Testing
-matrix = generate_matrix(0.5)
+areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
+matrix = generate_matrix(0.5, areas)
 print(matrix)
