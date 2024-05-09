@@ -1,5 +1,3 @@
-from utils.utils import check_next_item
-from geo_gain_matrix import generate_matrix
 import pandas as pd
 
 def route_total_geo(route:list, geo_matrix:pd.DataFrame) -> int:
@@ -10,15 +8,15 @@ def route_total_geo(route:list, geo_matrix:pd.DataFrame) -> int:
     Output: total_geo_gain - Sum of all values in the order given
     '''
     total_geo_gain = 0
-    for i in range(len(route) - 1):
+    for i in range(len(route)-1):
         # Sum the value of the pair start-end in the matrix
         start = route[i]
         end = route[i + 1]
-        total_geo_gain += route.loc[start, end]
+        total_geo_gain += geo_matrix.loc[start, end]
 
-    # If the last area is not 'KS', then it was visited and should be added
-    if route[-1] != "Z":
-        total_geo_gain += route.loc[route[-1], route[0]]
+    # If the last area is 'KS', then it was not visited and should not be added
+    if route[-1] == 'KS':
+        total_geo_gain -= geo_matrix.loc['D', 'KS']
 
     return total_geo_gain
 
@@ -46,16 +44,12 @@ def individual_validator(route:list) -> bool:
         index_qs = route.index('QS')
         if index_qs < len(route) - 1 and route[index_qs + 1] == 'DV':
             # Exception case: route can end in ['D', 'KS']
-            if route[-2:] != ['D', 'KS']:
+            if route[-2:] != ['D', 'KS'] and route[-1] != 'D':
                 return False
         else:
             # Normal case: route must end in 'D'
             if route[-1] != 'D':
                 return False
-    else:
-        # Normal case: route must end in 'D'
-        if route[-1] != 'D':
-            return False
     
     # If no conditions apply, then the route is valid
     return True
