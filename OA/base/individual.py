@@ -22,7 +22,10 @@ Distant Village (DV)
 Stag Nest (SN)
 '''
 
-areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
-
-def generate_random_solution(areas):
+def generate_route(areas):
+    '''
+    Function that generates 1 random route by shuffing the list of areas to visit
+    Input:  areas (list of strings) - Possible areas to visit
+    Output: individual (list of strings) - order in which the player visits the areas
+    '''
     return ['D'] + random.choices(areas, len(areas), replace=False)
