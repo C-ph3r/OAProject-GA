@@ -29,7 +29,7 @@ def generate_route(areas:list) -> list:
     Input:  areas (list of strings) - Possible areas to visit
     Output: individual (list of strings) - order in which the player visits the areas
     '''
-    return ['D'] + random.choices(areas, len(areas), replace=False)
+    return ['D'] + random.choices(areas[1:], len(areas), replace=False) + ['D']
 
 def generate_possible_route(areas:list) -> list:
     '''
