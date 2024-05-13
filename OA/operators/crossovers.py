@@ -49,5 +49,3 @@ def order_xover(p1,p2):
             from_1.pop(0)
 
     return c1,c2
-
-    
