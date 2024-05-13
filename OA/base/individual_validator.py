@@ -4,8 +4,8 @@ def individual_validator(route:list) -> bool:
     Input:  route (list of strings) - Order in which areas are visited
     Output: bool - Whether or not the route is valid
     '''
-    # Condition 1: All sessions must begin in Dirtmouth (D)
-    if route[0] != 'D':
+    # Condition 1: All sessions must begin and end in Dirtmouth (D)
+    if route[0] != 'D' or route[-1] != 'D':
         return False
     
     # Condition 2: City Storerooms (CS) cannot be visited right after Queen's Gardens (QG)
@@ -16,16 +16,18 @@ def individual_validator(route:list) -> bool:
     if 'RG' in route[:len(route)//2]:
         return False
     
-    # Condition 4: A session must end in 'D'. Or in ['D', 'KS'] only if 'DV' is visited right after 'QS'
-    index_qs = route.index('QS')
-    if index_qs < len(route) - 1 and route[index_qs + 1] == 'DV':
-        # Exception case: route can end in ['D', 'KS']
-        if route[-2:] != ['D', 'KS'] and route[-1] != 'D':
-            return False
-    else:
-        # Normal case: route must end in 'D'
-        if route[-1] != 'D':
-            return False
-    
     # If no conditions apply, then the route is valid
     return True
+
+def can_it_skip_KS(route:list) -> bool:
+    '''
+    Function that returns True if this route meets the conditions to skip 'KS'
+    Input: route (list of strings) - Order in which areas are visited
+    Output: bool - Whether or not Ks can be skipped
+    '''
+    # If 'DV' is visited right after 'QS', the route may skil 'KS'
+    index_qs = route.index('QS')
+    if index_qs < len(route) - 1 and route[index_qs + 1] == 'DV':
+        return True
+    else:
+        return False
