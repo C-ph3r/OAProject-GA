@@ -47,4 +47,3 @@ for seed in trange(10):
       verbose=True,
       log_path="log/test_log.csv", elitism=True,
       elite_func=get_n_elites(n_elites), seed=seed)
-
