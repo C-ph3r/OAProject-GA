@@ -1,29 +1,36 @@
 from algorithm.algorithm import GA
-from base.population import create_population_ks, evaluate_population_ks_max
-from operators.selection_algorithms import tournament_selection_max
-from operators.crossovers import one_point_xover
-from operators.mutators import single_bit_mutation
-from utils.utils import get_elite_max
-from base.ks_data import *
+from base.population import create_population, evaluate_population
+from operators.selection_algorithms import SUS_selection, tournament_selection, boltzmann_selection
+from operators.crossovers import order_xover
+from operators.mutators import inversion_mutation, rgibnnm
+from utils.utils import get_n_elites
+from base.geo_gain_matrix import generate_matrix
 
 from tqdm import trange
 
+# List of areas the player can visit
+areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
+
 # function based parameters
-initializer = create_population_ks(individual_size=len(values))
+geo_gain_matrix = generate_matrix(0.8, areas)
 
-evaluator = evaluate_population_ks_max(values=values, volumes=volumes, capacity=capacity)
+initializer = create_population(len(areas))
 
-selector = tournament_selection_max(10)  # high selection pressure with a larger tournament size :)
+evaluator = evaluate_population(geo_gain_matrix)
 
-xover = one_point_xover
+selector = tournament_selection(10)  # high selection pressure with a larger tournament size :)
 
-mutator = single_bit_mutation
+xover = order_xover()
+
+mutator = inversion_mutation(rgibnnm(geo_gain_matrix=geo_gain_matrix)) 
+   # nota: este mutator tem de ter este parâmetro pre-set
 
 # evolution based parameters
 pop_size = 20
 n_gens = 100
 p_xo = 0.8
 p_m = 0.3
+n_elites = 2
 
 
 for seed in trange(10):
@@ -39,4 +46,4 @@ for seed in trange(10):
       p_m=p_m,
       verbose=True,
       log_path="log/test_log.csv", elitism=True,
-      elite_func=get_elite_max, seed=seed)
+      elite_func=get_n_elites(n_elites), seed=seed)

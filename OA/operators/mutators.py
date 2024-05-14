@@ -1,52 +1,51 @@
 import random
-
-def single_bit_mutation(individual, p_m):
-
-    mutated_individual = []
-
-    for bit in individual:
-
-        if random.random() < p_m:
-
-            mutated_individual.append(1 - bit)
-
-        else:
-            mutated_individual.append(bit)
+from base.individual_validator import individual_validator
+import numpy as np
+from copy import deepcopy
 
 
-    return mutated_individual
+def inversion_mutation(route):
+    '''
+    Function that performs inversion mutation on a given route.
+    In inversion mutation, a sequence of cities within the route is randomly
+    selected and its order is reversed.
 
-    # or...
-    # return [1-bit if random.random() < p_m else bit for bit in individual]
+    Inputs: route (list) - Order in which the player visits the areas
+    Outputs: mutated_route (list) - A mutated version of the input after inversion mutation
+    '''
+    validity = False
 
+    while not validity:
+        start_index = random.randint(0, len(route) - 2)
+        end_index = random.randint(start_index + 1, len(route) - 1)
+        mutated_route = route[:start_index] + route[start_index:end_index+1][::-1] + route[end_index+1:]
+        validity = individual_validator(mutated_route)
 
-def buddy_bit_mutation(individual, p_m):
+    return mutated_route
 
-    mutated_individual = []
+def rgibnnm(route, geo_gain_matrix):
+    '''
+    Function that performs RGIBNNM mutation on a given route.
 
-    i = 0
+    Inputs: route (list) - Order in which the player visits the areas
+            geo_gain_matrix (list of lists) - Geo gain per pair of areas
+    Outputs: mutated_route (list) - A mutated version of the input after inversion mutation
+    '''
+    # Selecting a random area
+    indA = random.randint(0, len(route) - 1)
+    areaA = route[indA]
 
-    while i < len(individual):
+    # Finding the one with the maximum geo gain from it
+    areaB = max((c for c in route if c != areaA), key=lambda c: geo_gain_matrix[areaA][c])
 
-        if random.random() < p_m:
-            if not i == len(individual) - 1:
-                mutated_individual.extend([1 - individual[i], 1 - individual[i + 1]])
-            else:
-                mutated_individual.append(1 - individual[i])
-                mutated_individual[0] = 1 - mutated_individual[0]
+    # From the areas with most geo gain from it
+    range_of_cities = [c for c in route if abs(c - areaB) >= np.mean(geo_gain_matrix[areaA]) and c != areaA]
 
-        else:
-            if not i == len(individual) - 1:
-                mutated_individual.extend([individual[i], individual[i + 1]])
-            else:
-                mutated_individual.append(individual[i])
+    if range_of_cities:
+        # Select one area to swap with areaA
+        areaC = random.choice(range_of_cities)
+        mutated = deepcopy(route)
+        mutated[route.index(areaA)] = areaC
+        mutated[route.index(areaC)] = areaA
 
-        i += 1
-
-
-def neighbourhood_mutation(hamming_dist):
-
-    def mutate(individual, p_m):
-        pass
-
-    return mutate
+    return mutated
