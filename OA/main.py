@@ -40,6 +40,3 @@ for seed in trange(10):
       verbose=True,
       log_path="log/test_log.csv", elitism=True,
       elite_func=get_elite_max, seed=seed)
-
-def rawr():
-   print(rawr)
