@@ -19,9 +19,10 @@ def check_next_item(lst, target, next_item):
 def get_n_elites(n):
   '''
   Elitism function. Selects the best fitting individuals
-  Inputs: n - number of elites
-          pop - population
-          pop_fit - the fit values of the population
+  Inputs: n - number of elites 
+        pop - population 
+        pop_fit - the fit values of the population
+  Outputs: list of elites, list of their fitnesses
   '''
 
   def get_elite(pop, pop_fit):

@@ -1,30 +1,26 @@
 import random
+from base.individual_validator import individual_validator
 
-=======
-def swap_mutation(tour):
-    """
-    Apply swap mutation to a tour in the TSP population.
-    
-    Parameters:
-    - tour: List representing the tour (list of city indices)
-    
-    Returns:
-    - mutated_tour: List representing the mutated tour
-    """
-    # Make a copy of the tour to avoid modifying the original
-    mutated_tour = tour.deepcopy()
-    
-    # Select two distinct random indices in the tour
-    idx1, idx2 = random.sample(range(len(mutated_tour)), 2)
-    
-    # Swap the cities at the selected indices
-    mutated_tour[idx1], mutated_tour[idx2] = mutated_tour[idx2], mutated_tour[idx1]
-    
-    # Ensure that all cities are visited exactly once
-    mutated_set = set(mutated_tour)
-    for city in tour:
-        if city not in mutated_set:
-            mutated_tour.append(city)
-            break
-    
-    return mutated_tour
+# Function to perform inversion mutation
+def inversion_mutation(route):
+    '''
+    Function that performs inversion mutation on a given route.
+
+    In inversion mutation, a subsequence of cities within the route is randomly
+    selected and its order is reversed, producing a mutated route.
+
+    Inputs:
+    - route (list): A list representing the route, where each element represents
+      a city.
+
+    Outputs: mutated_route (list): A mutated version of the input after inversion mutation
+    '''
+    validity = False
+
+    while not validity:
+        start_index = random.randint(0, len(route) - 2)
+        end_index = random.randint(start_index + 1, len(route) - 1)
+        mutated_route = route[:start_index] + route[start_index:end_index+1][::-1] + route[end_index+1:]
+        validity = individual_validator(mutated_route)
+
+    return mutated_route

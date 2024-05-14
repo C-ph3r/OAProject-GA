@@ -2,7 +2,7 @@ from algorithm.algorithm import GA
 from base.population import create_population, evaluate_population
 from operators.selection_algorithms import tournament_selection_max
 from operators.crossovers import one_point_xover
-from operators.mutators import single_bit_mutation
+from operators.mutators import inversion_mutation
 from utils.utils import get_n_elites
 
 from tqdm import trange
@@ -19,7 +19,7 @@ selector = tournament_selection_max(10)  # high selection pressure with a larger
 
 xover = one_point_xover
 
-mutator = single_bit_mutation
+mutator = inversion_mutation
 
 # evolution based parameters
 pop_size = 20
