@@ -36,7 +36,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
                 o1, o2 = deepcopy(p1), deepcopy(p2)
 
             # 4.2.3. Mutating the offspring
-            o1, o2 = mutator(o1, p_m), mutator(o2, p_m)
+            if random.random() < p_m:
+                o1 = mutator(o1, p_m)
+            elif random.random() < p_m:
+                o2 = mutator(o2, p_m)
 
             # 4.2.4. Adding the offpring into the offspring population
             offspring.extend([o1, o2])
