@@ -1,5 +1,5 @@
 import pandas as pd
-from individual_validator import individual_validator
+from individual_validator import individual_validator, can_it_skip_KS
 
 def route_total_geo(route:list, geo_matrix:pd.DataFrame) -> int:
     '''
@@ -15,11 +15,8 @@ def route_total_geo(route:list, geo_matrix:pd.DataFrame) -> int:
         end = route[i + 1]
         total_geo_gain += geo_matrix.loc[start, end]
 
-    # If the last area is 'KS', then it was not visited and should not be added
-    if route[-1] == 'KS':
-        total_geo_gain -= geo_matrix.loc['D', 'KS']
-
     return total_geo_gain
+
 
 
 def individual_fitness(route:list, geo_matrix:pd.DataFrame) -> int:
@@ -32,7 +29,11 @@ def individual_fitness(route:list, geo_matrix:pd.DataFrame) -> int:
     '''
     if individual_validator(route):
         # In case the solution is valid
-        return individual_fitness(route, geo_matrix)
+        if can_it_skip_KS(route):
+            route_skip = route.remove('KS')
+            return max(individual_fitness(route, geo_matrix), individual_fitness(route_skip, geo_matrix))
+        else:
+            return individual_fitness(route, geo_matrix)
     else:
         # In case the solution is invalid
-        return -1
+        return -999
