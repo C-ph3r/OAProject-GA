@@ -1,37 +1,31 @@
 import random
 
-def generate_solution_ks(size):
+'''
+A solution for this problem should be a vector of size 11, the number of
+areas the player passes through in any given session.
 
-    def generate_sol():
-        return [random.randint(0, 1) for _ in range(size)]
+Each index in the vector corresponds to the codename of the area the player visits
+in order. If an area is after the final 'D', it is considered to not be visited.
 
-    return generate_sol
+Example solution: ['D', 'FC', 'G', 'QS', 'DV', 'QG', 'CS', 'SN', 'RG', 'D', 'KS']
 
+Areas:
+Dirtmouth (D)
+Forgotten Crossroads (FC)
+Greenpath (G)
+Queen's Station (QS)
+Queen's Gardens (QG)
+City Storerooms (CS)
+King's Station (KS)
+Resting Grounds (RG)
+Distant Village (DV)
+Stag Nest (SN)
+'''
 
-def get_fitness_ks_max(values, volumes, capacity):
-
-    def get_fitness(sol):
-
-        # getting the total value of the items in the solution
-        fitness = sum([values[i] * sol[i] for i in range(len(sol))])
-
-        # getting the total volume these items occupy
-        total_vol = sum([volumes[i] * sol[i] for i in range(len(sol))])
-
-        return fitness if total_vol <= capacity else 0
-
-    return get_fitness
-
-
-def get_fitness_ks_min(values, volumes, capacity): # TODO: finish/change this
-    
-    def get_fitness(sol):
-        # getting the total value of the items in the solution
-        fitness = sum([values[i] * sol[i] for i in range(len(sol))])
-
-        # getting the total volume these items occupy
-        total_vol = sum([volumes[i] * sol[i] for i in range(len(sol))])
-
-        return fitness # we will talk about this soon ;)
-
-    return get_fitness
+def generate_route(areas):
+    '''
+    Function that generates 1 random route by shuffing the list of areas to visit
+    Input:  areas (list of strings) - Possible areas to visit
+    Output: individual (list of strings) - order in which the player visits the areas
+    '''
+    return ['D'] + random.choices(areas, len(areas), replace=False)

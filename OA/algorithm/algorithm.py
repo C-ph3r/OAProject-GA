@@ -6,7 +6,7 @@ from base.individual import *
 
 def GA(initializer, evaluator, selector, crossover, mutator,
        pop_size, n_gens, p_xo, p_m, elite_func, verbose=False,
-       log_path=None, elitism=True, seed=0):
+       log_path=None, elitism=False, seed=0):
 
     # setting up the seed:
     random.seed(seed)
@@ -14,8 +14,6 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
     if elite_func is None:
         raise Exception("Without a proper elite function I cannot work. Humph! *grumpy sounds*")
-
-    # TODO: do i need to think about seeds?
 
     # initializing the gen 0 population:
     population = initializer(pop_size)
