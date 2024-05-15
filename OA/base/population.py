@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '..')
+
 from base.individual import generate_route
 from base.fitness_function import individual_fitness
 

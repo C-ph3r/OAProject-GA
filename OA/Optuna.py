@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '..')
+
 from base.population import create_population, evaluate_population
 from base.fitness_function import individual_fitness
 from base.geo_gain_matrix import generate_matrix
@@ -46,7 +49,7 @@ def objective(trial):
 
 def optimize_optuna(n_trials):
 # Running and tunning parameters with Optuna optimization
-   study = optuna.create_study(direction='minimize')
+   study = optuna.create_study(direction='maximize')
    study.optimize(objective, n_trials=n_trials)
 
    # Get the best parameters and their corresponding fitness

@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '..')
+
 import csv
 import numpy as np
 from copy import deepcopy
@@ -19,7 +22,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
     population = initializer(pop_size)
 
     # 3. Evaluating the current population:
-    pop_fit = evaluator(population)(geo_matrix)
+    pop_fit = evaluator(population)
 
     # 4. Main loop
     for gen in range(n_gens):
@@ -30,7 +33,8 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         # 4.2. While the offspring population is not full:
         while len(offspring) < pop_size:
             # 4.2.1. Selecting the parents
-            p1, p2 = selector(population, pop_fit), selector(population, pop_fit)
+            p1 = selector(population, pop_fit)
+            p2 = selector(population, pop_fit)
 
             # 4.2.2. Choosing between crossover and reproduction
             if random.random() < p_xo:

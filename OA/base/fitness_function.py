@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '..')
+
 import pandas as pd
 from base.individual_validator import individual_validator, can_it_skip_KS
 
