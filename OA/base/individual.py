@@ -1,5 +1,5 @@
 import random
-from individual_validator import individual_validator
+from base.individual_validator import individual_validator
 from copy import deepcopy
 
 '''
@@ -43,8 +43,6 @@ def generate_route(areas: list) -> list:
     random_route.append('D')  # Add 'D' at the end of the random route
     return random_route
 
-
-print(generate_route(['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']))
 
 def generate_possible_route(areas:list) -> list:
     '''

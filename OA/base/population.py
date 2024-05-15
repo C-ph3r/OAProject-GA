@@ -1,11 +1,11 @@
 from base.individual import generate_route
 from base.fitness_function import individual_fitness
 
-def create_population(individual_size):
+def create_population(areas_list):
 
     def generate_pop(pop_size):
 
-        return [generate_route(individual_size)() for _ in range(pop_size)]
+        return [generate_route(areas_list)() for _ in range(pop_size)]
 
     return generate_pop
 
