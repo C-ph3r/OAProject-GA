@@ -2,7 +2,7 @@ from base.population import create_population, evaluate_population
 from base.fitness_function import individual_fitness
 from base.geo_gain_matrix import generate_matrix
 from operators.selection_algorithms import SUS_selection, boltzmann_selection
-from operators.crossovers import order_xover
+from operators.crossovers import order_xover, position_xover
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites
@@ -29,7 +29,7 @@ def objective(trial):
     crossover_rate = trial.suggest_float('crossover_rate', 0.7, 0.9)
     selector= trial.suggest_categorical('selector', [SUS_selection, boltzmann_selection(0.5)])
     mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
-    crossover= trial.suggest_categorical('crossover', [order_xover])
+    crossover= trial.suggest_categorical('crossover', [order_xover, position_xover])
    
     # Running genetic algorithm with the different parameters
     solution = GA(initializer, evaluator, 
