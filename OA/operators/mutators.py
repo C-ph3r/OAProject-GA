@@ -31,7 +31,6 @@ def swap_mutation(tour):
             break
     
     return mutated_tour
-=======
 
 def inversion_mutation(route):
     '''

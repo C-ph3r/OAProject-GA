@@ -3,7 +3,7 @@ from base.fitness_function import individual_fitness
 from base.geo_gain_matrix import generate_matrix
 from operators.selection_algorithms import SUS_selection, boltzmann_selection
 from operators.crossovers import order_xover
-from operators.mutators import inversion_mutation, rgibnnm
+from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites
 import Optuna as optuna
@@ -28,7 +28,7 @@ def objective(trial):
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.7, 0.9)
     selector= trial.suggest_categorical('selector', [SUS_selection, boltzmann_selection(0.5)])
-    mutator= trial.suggest_categorical('mutator', [inversion_mutation, rgibnnm])
+    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
     crossover= trial.suggest_categorical('crossover', [order_xover])
    
     # Running genetic algorithm with the different parameters
