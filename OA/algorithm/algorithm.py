@@ -2,11 +2,14 @@ import csv
 import numpy as np
 from copy import deepcopy
 from base.individual import *
+import pandas as pd
 
 
 def GA(initializer, evaluator, selector, crossover, mutator,
-       pop_size, n_gens, p_xo, p_m, elite_func, verbose=False,
-       log_path=None, elitism=False, seed=0):
+       pop_size, n_gens, p_xo, p_m, elite_func, geo_matrix,
+       verbose=False, log_path=None, elitism=False, seed=0):
+
+    geo_matrix = pd.DataFrame(geo_matrix)
 
     # 1. Setting up the seed:
     random.seed(seed)
@@ -16,7 +19,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
     population = initializer(pop_size)
 
     # 3. Evaluating the current population:
-    pop_fit = evaluator(population)
+    pop_fit = evaluator(population)(geo_matrix)
 
     # 4. Main loop
     for gen in range(n_gens):

@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # Stationary parameters
 areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
 geo_gain_matrix = generate_matrix(0.8, areas)
-initializer = create_population(len(areas))
+initializer = create_population(areas_list=areas)
 evaluator = evaluate_population(geo_gain_matrix)
 elite_func = get_n_elites(3)
 selection_pressure = 5
@@ -35,7 +35,8 @@ def objective(trial):
     solution = GA(initializer, evaluator, 
                   selector, crossover, mutator, 
                   pop_size, n_gens, crossover_rate, mutation_rate,
-                  elite_func, verbose=False, log_path=False, elitism=True, seed=42)
+                  elite_func, verbose=False, log_path=False, elitism=True, seed=42,
+                  geo_matrix = geo_gain_matrix)
     
     # Evaluating the given solution
     distance = individual_fitness(solution)

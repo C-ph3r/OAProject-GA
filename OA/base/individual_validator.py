@@ -19,6 +19,7 @@ def individual_validator(route:list) -> bool:
     # If no conditions apply, then the route is valid
     return True
 
+
 def can_it_skip_KS(route:list) -> bool:
     '''
     Function that returns True if this route meets the conditions to skip 'KS'

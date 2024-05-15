@@ -1,5 +1,5 @@
 import random
-from base.individual_validator import individual_validator
+from individual_validator import individual_validator
 from copy import deepcopy
 
 '''

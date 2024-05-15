@@ -5,7 +5,7 @@ def create_population(areas_list):
 
     def generate_pop(pop_size):
 
-        return [generate_route(areas_list)() for _ in range(pop_size)]
+        return [generate_route(areas_list) for _ in range(pop_size)]
 
     return generate_pop
 
