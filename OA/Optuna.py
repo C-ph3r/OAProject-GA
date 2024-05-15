@@ -1,5 +1,11 @@
+from base.population import create_population, evaluate_population
+from base.geo_gain_matrix import generate_matrix
 
-#Optuna
+# Stationary parameters
+areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
+geo_gain_matrix = generate_matrix(0.8, areas)
+initializer = create_population(len(areas))
+evaluator = evaluate_population(geo_gain_matrix)
 
 # Lists to plot the model comparison
 fitness_scores = []
