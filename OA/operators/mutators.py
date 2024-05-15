@@ -31,21 +31,26 @@ def rgibnnm(route, geo_gain_matrix):
             geo_gain_matrix (list of lists) - Geo gain per pair of areas
     Outputs: mutated_route (list) - A mutated version of the input after inversion mutation
     '''
-    # Selecting a random area
-    indA = random.randint(0, len(route) - 1)
-    areaA = route[indA]
+    validity = False
 
-    # Finding the one with the maximum geo gain from it
-    areaB = max((c for c in route if c != areaA), key=lambda c: geo_gain_matrix[areaA][c])
+    while not validity:
+        # Selecting a random area
+        indA = random.randint(0, len(route) - 1)
+        areaA = route[indA]
 
-    # From the areas with most geo gain from it
-    range_of_cities = [c for c in route if abs(c - areaB) >= np.mean(geo_gain_matrix[areaA]) and c != areaA]
+        # Finding the one with the maximum geo gain from it
+        areaB = max((c for c in route if c != areaA), key=lambda c: geo_gain_matrix[areaA][c])
 
-    if range_of_cities:
-        # Select one area to swap with areaA
-        areaC = random.choice(range_of_cities)
-        mutated = deepcopy(route)
-        mutated[route.index(areaA)] = areaC
-        mutated[route.index(areaC)] = areaA
+        # From the areas with most geo gain from it
+        range_of_cities = [c for c in route if abs(c - areaB) >= np.mean(geo_gain_matrix[areaA]) and c != areaA]
+
+        if range_of_cities:
+            # Select one area to swap with areaA
+            areaC = random.choice(range_of_cities)
+            mutated = deepcopy(route)
+            mutated[route.index(areaA)] = areaC
+            mutated[route.index(areaC)] = areaA
+        
+        validity = individual_validator(mutated)
 
     return mutated

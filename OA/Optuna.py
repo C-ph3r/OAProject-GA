@@ -1,30 +1,44 @@
 from base.population import create_population, evaluate_population
+from base.fitness_function import individual_fitness
 from base.geo_gain_matrix import generate_matrix
+from operators.selection_algorithms import SUS_selection, boltzmann_selection
+from operators.crossovers import order_xover
+from operators.mutators import inversion_mutation, rgibnnm
+from algorithm.algorithm import GA
+from utils.utils import get_n_elites
+import Optuna as optuna
+import matplotlib.pyplot as plt
+
 
 # Stationary parameters
 areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
 geo_gain_matrix = generate_matrix(0.8, areas)
 initializer = create_population(len(areas))
 evaluator = evaluate_population(geo_gain_matrix)
+elite_func = get_n_elites(3)
+selection_pressure = 5
 
 # Lists to plot the model comparison
 fitness_scores = []
 
 # Defining the objective function 
 def objective(trial):
-    population_size = trial.suggest_categorical('population_size', [25, 50, 100])
-    num_gen = trial.suggest_categorical('num_gen', [50, 100, 200])
+    pop_size = trial.suggest_categorical('pop_size', [25, 50, 100])
+    n_gens = trial.suggest_categorical('n_gens', [50, 100, 200])
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.7, 0.9)
-    selector= trial.suggest_categorical('selector', [selector_1, selector_2, selector_3])
-    mutator= trial.suggest_categorical('mutator', [mutator_1, mutator_2, mutator_3])
-    crossover= trial.suggest_categorical('crossover', [crossover_1, crossover_2, crossover_3])
+    selector= trial.suggest_categorical('selector', [SUS_selection, boltzmann_selection(0.5)])
+    mutator= trial.suggest_categorical('mutator', [inversion_mutation, rgibnnm])
+    crossover= trial.suggest_categorical('crossover', [order_xover])
    
     # Running genetic algorithm with the different parameters
-    solution = GA(initializer,evaluator, selector, mutator, population_size, num_gen, crossover_rate, mutation_rate)
+    solution = GA(initializer, evaluator, 
+                  selector, crossover, mutator, 
+                  pop_size, n_gens, crossover_rate, mutation_rate,
+                  elite_func, verbose=False, log_path=False, elitism=True, seed=42)
     
     # Evaluating the given solution
-    distance = evaluate_solution(solution)
+    distance = individual_fitness(solution)
     fitness_scores.append(distance)
     
     return distance
