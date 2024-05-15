@@ -58,7 +58,7 @@ def position_xover(p1,p2):
 
     
     Parameters:
-    p1 (list): first parent on which to perform crossover
+    p1 (list): firstj parent on which to perform crossover
     p2 (list): second parent on which to perform crossover
 
     output:
@@ -96,3 +96,54 @@ def position_xover(p1,p2):
     
 
     return c1,c2
+
+def cycle_xover(p1, p2):
+    c1 = [-1 for _ in p1]
+    c2 = [-1 for _ in p1]
+
+    def cycle(p1, p2):
+        temp1 = []
+        pos = 0
+
+        # Start the cycle with the first element of p1
+        while True:
+            if p1[pos] in temp1:
+                break
+            
+            # Append the current value to the cycle
+            temp1.append(p1[pos])
+            # Fetch the index of the corresponding value in p2
+            pos = p1.index(p2[pos])
+        
+        return temp1
+
+    indices_handled = set()
+    
+    for i in range(len(p1)):
+        if c1[i] == -1:
+            # Find the cycle starting from index i
+            cycle_elements = cycle(p1, p2)
+            
+            # Fill the offspring based on the cycle elements
+            for elem in cycle_elements:
+                idx = p1.index(elem)
+                c1[idx] = p1[idx]
+                c2[idx] = p2[idx]
+                indices_handled.add(idx)
+
+            # Alternate filling the offspring by swapping the roles of parents
+            for elem in cycle_elements:
+                idx = p1.index(elem)
+                if c1[idx] == -1:
+                    c1[idx] = p2[idx]
+                if c2[idx] == -1:
+                    c2[idx] = p1[idx]
+
+    # Fill the rest of the offspring with remaining elements
+    for i in range(len(p1)):
+        if c1[i] == -1:
+            c1[i] = p2[i]
+        if c2[i] == -1:
+            c2[i] = p1[i]
+
+    return c1, c2
