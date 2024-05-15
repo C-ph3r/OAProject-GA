@@ -1,5 +1,5 @@
 import pandas as pd
-from individual_validator import individual_validator, can_it_skip_KS
+from base.individual_validator import individual_validator, can_it_skip_KS
 
 def route_total_geo(route:list, geo_matrix:pd.DataFrame) -> int:
     '''

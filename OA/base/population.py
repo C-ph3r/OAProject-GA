@@ -1,5 +1,5 @@
-from base.individual import *
-from fitness_function import *
+from base.individual import generate_route
+from base.fitness_function import individual_fitness
 
 def create_population(individual_size):
 

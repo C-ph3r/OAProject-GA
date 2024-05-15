@@ -6,7 +6,7 @@ from operators.crossovers import order_xover, position_xover
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites
-import Optuna as optuna
+import optuna
 import matplotlib.pyplot as plt
 
 

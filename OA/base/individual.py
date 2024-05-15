@@ -1,5 +1,6 @@
 import random
-from base.individual_validator import individual_validator
+from individual_validator import individual_validator
+from copy import deepcopy
 
 '''
 A solution for this problem should be a vector of size 11, the number of
@@ -23,13 +24,27 @@ Distant Village (DV)
 Stag Nest (SN)
 '''
 
-def generate_route(areas:list) -> list:
+
+def generate_route(areas: list) -> list:
     '''
-    Function that generates 1 random route by shuffing the list of areas to visit
+    Function that generates 1 random route by randomly selecting and removing items from the list of areas to visit
     Input:  areas (list of strings) - Possible areas to visit
     Output: individual (list of strings) - order in which the player visits the areas
     '''
-    return ['D'] + random.choices(areas[1:], len(areas), replace=False) + ['D']
+    areas_copy = areas[1:]  # Not using 'D'
+    random_route = ['D']  # Initialize the random route list with 'D' at the beginning
+    
+    while areas_copy:  # Until all areas are visited
+        # Selecing an area, adding to the route and removing from the copy
+        random_area = random.sample(areas_copy, 1)[0]
+        random_route.append(random_area)
+        areas_copy.remove(random_area)
+    
+    random_route.append('D')  # Add 'D' at the end of the random route
+    return random_route
+
+
+print(generate_route(['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']))
 
 def generate_possible_route(areas:list) -> list:
     '''
