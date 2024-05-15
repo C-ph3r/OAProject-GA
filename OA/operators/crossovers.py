@@ -1,5 +1,4 @@
 import numpy as np
-from copy import deepcopy
 import random
 
 def order_xover(p1,p2):
@@ -10,13 +9,12 @@ def order_xover(p1,p2):
     3- Understand the characters that are already in each child, and those from the parents that are not yet in the child
     4- Assign the unused characters from parent 2 (in their original order), to child 1 and vice versa
 
-    example input:
-    Parent 1 = 1 2 3 | 4 5 6 7 | 8 9
-    Parent 2 = 4 5 2 | 1 8 7 6 | 9 3
-    
-    example output:
-    Children 1 = 2 1 8 | 4 5 6 7 | 9 3
-    Children 2 = 3 4 5 | 1 8 7 6 | 9 2
+    Parameters:
+    p1 (list): first parent on which to perform crossover
+    p2 (list): second parent on which to perform crossover
+
+    output:
+    c1, c2 (lists): Crossed over children, with same lenght as the parents
     '''
     c1 = [-1 for i in p1]
     c2 = [-1 for i in p1]
@@ -47,5 +45,54 @@ def order_xover(p1,p2):
         if c2[i] == -1:
             c2[i] = from_1[0]
             from_1.pop(0)
+
+    return c1,c2
+
+def position_xover(p1,p2):
+    '''
+    Performs position crossover on two parent solutions
+    Steps:
+    1 - Chooses a random number of values to keep
+    2 - Transfers said values in their original positions from p1 to c1 and p2 to c2
+    3 - Transfers the remaining values crossed over from p2 to c1 and p1 to c2
+
+    
+    Parameters:
+    p1 (list): first parent on which to perform crossover
+    p2 (list): second parent on which to perform crossover
+
+    output:
+    c1, c2 (lists): Crossed over children, with same lenght as the parents
+    '''
+
+    n_positions = random.randint(1, len(p1)-2)
+
+    c1 = [-1 for i in p1]
+    c2 = [-1 for i in p1]
+
+    sample_1 = random.sample(p1,n_positions)
+    sample_2 = random.sample(p2,n_positions)
+
+    values_p1 = [val for val in p1 if val not in sample_2]
+    values_p2 = [val for val in p2 if val not in sample_1]
+
+    for i in range(len(p1)):
+        if p1[i] in sample_1:
+            c1[i] = p1[i]
+
+        if p2[i] in sample_2:
+            c2[i] = p2[i]
+
+
+    for i in range(len(p1)):
+        if c1[i] == -1:
+            c1[i] = values_p2[0]
+            values_p2.pop(0)
+
+        if c2[i] == -1:
+            c2[i] = values_p1[0]
+            values_p1.pop(0)
+
+    
 
     return c1,c2
