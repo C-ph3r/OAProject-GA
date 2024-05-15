@@ -61,3 +61,4 @@ def optimize_optuna(n_trials):
    plt.legend()
    plt.show()
 
+optimize_optuna(1)

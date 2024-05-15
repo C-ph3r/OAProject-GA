@@ -31,9 +31,9 @@ def individual_fitness(route:list, geo_matrix:pd.DataFrame) -> int:
         # In case the solution is valid
         if can_it_skip_KS(route):
             route_skip = route.remove('KS')
-            return max(individual_fitness(route, geo_matrix), individual_fitness(route_skip, geo_matrix))
+            return max(route_total_geo(route, geo_matrix), route_total_geo(route_skip, geo_matrix))
         else:
-            return individual_fitness(route, geo_matrix)
+            return route_total_geo(route, geo_matrix)
     else:
         # In case the solution is invalid
         return -999
