@@ -5,7 +5,10 @@ from base.individual import generate_possible_route
 from base.fitness_function import individual_fitness
 
 def create_population(areas_list):
-
+    '''
+    Creates a valid population
+    '''
+    
     def generate_pop(pop_size):
 
         return [generate_possible_route(areas_list) for _ in range(pop_size)]
@@ -13,6 +16,9 @@ def create_population(areas_list):
     return generate_pop
 
 def evaluate_population(geo_matrix):
+    '''
+    Returns a list of fitnesses
+    '''
 
     def pop_evaluation(population):
 
