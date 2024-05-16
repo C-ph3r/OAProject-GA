@@ -31,6 +31,8 @@ p_m = 0.3
 n_elites = 2
 
 
+
+
 for seed in trange(10):
 
    GA(initializer=initializer,
