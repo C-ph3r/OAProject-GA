@@ -42,5 +42,5 @@ def individual_fitness(route:list, geo_matrix:pd.DataFrame) -> int:
             return route_total_geo(route, geo_matrix)
     else:
         # In case the solution is invalid
-        return None
+        return (route_total_geo(route, geo_matrix)-100)
 

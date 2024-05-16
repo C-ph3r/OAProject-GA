@@ -57,8 +57,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
         # 4.4. If elitism is used, apply it
         if elitism:
-            elite, best_fit = elite_func(population, pop_fit)
-            offspring[-1] = elite # adding the elite, unchanged into the offspring population
+            while len(offspring) > pop_size-n_elites:
+                offspring.pop()
+                elite, best_fit = elite_func(population, pop_fit)
+                offspring[-1] = elite # adding the elite, unchanged into the offspring population
 
         # 4.5. Replacing the current population with the offpsring population
         population = offspring
