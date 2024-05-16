@@ -2,7 +2,7 @@ import numpy as np
 
 def check_next_item(lst, target, next_item):
     '''
-    Function used in the fitness calculation to find if the next string in a list
+    Function used in the viability calculation to find if the next string in a list
     corresponds to a predetermined one
     Inputs: lst (list) - list in which to search
             target - item we are looking to find

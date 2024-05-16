@@ -22,6 +22,7 @@ selection_pressure = 5
 xover = order_xover
 mutator = inversion_mutation
 selector =  tournament_selection
+log_path = 'log\testing_logging.csv'
 
 # evolution based parameters
 pop_size = 20
@@ -44,5 +45,5 @@ for seed in trange(10):
       p_m=p_m,
       geo_matrix=geo_gain_matrix,
       verbose=True,
-      log_path="log/test_log.csv", elitism=True,
+      log_path=None, elitism=True,
       elite_func=get_n_elites(n_elites), seed=seed)

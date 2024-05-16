@@ -44,9 +44,9 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
             # 4.2.3. Mutating the offspring
             if random.random() < p_m:
-                o1 = mutator(o1, p_m)
+                o1 = mutator(o1)
             elif random.random() < p_m:
-                o2 = mutator(o2, p_m)
+                o2 = mutator(o2)
 
             # 4.2.4. Adding the offpring into the offspring population
             offspring.extend([o1, o2])
