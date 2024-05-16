@@ -9,7 +9,7 @@ import random
 
 
 def GA(initializer, evaluator, selector, crossover, mutator,
-       pop_size, n_gens, p_xo, p_m, elite_func, geo_matrix,
+       pop_size, n_gens, p_xo, p_m, n_elites, elite_func, geo_matrix,
        verbose=False, log_path=None, elitism=False, seed=0):
 
     geo_matrix = pd.DataFrame(geo_matrix)
@@ -57,8 +57,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
         # 4.4. If elitism is used, apply it
         if elitism:
-            elite, best_fit = elite_func(population, pop_fit)
-            offspring[-1] = elite # adding the elite, unchanged into the offspring population
+            while len(offspring) > pop_size-n_elites:
+                offspring.pop()
+                elite, best_fit = elite_func(population, pop_fit)
+                offspring[-1] = elite # adding the elite, unchanged into the offspring population
 
         # 4.5. Replacing the current population with the offpsring population
         population = offspring

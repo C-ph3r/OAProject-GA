@@ -10,11 +10,13 @@ def get_n_elites(n):
   '''
 
   def get_elite(pop, pop_fit):
-
-    # getting the best n elites:
-    bests_i = np.argsort(pop_fit)[-n:]
-
-    # getting the list of elites and their list of fitnesses
-    return [pop[i] for i in bests_i], [pop_fit[i] for i in bests_i]
+      # Get the indices that would sort the population by fitness in descending order
+      best_indices = np.argsort(pop_fit)[-n:][::-1]
+      
+      # Get the list of elites and their fitnesses
+      elites = [pop[i] for i in best_indices]
+      elite_fitnesses = [pop_fit[i] for i in best_indices]
+      
+      return elites, elite_fitnesses
 
   return get_elite
