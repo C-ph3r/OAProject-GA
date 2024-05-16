@@ -4,33 +4,33 @@ import numpy as np
 from copy import deepcopy
 
 
-def swap_mutation(tour):
+def swap_mutation(route):
     """
-    Apply swap mutation to a tour in the TSP population.
+    Apply swap mutation to a route in the TSP population.
     
     Parameters:
-    - tour: List representing the tour (list of city indices)
+    - route: List representing the route (list of city indices)
     
     Returns:
-    - mutated_tour: List representing the mutated tour
+    - mutated_route: List representing the mutated route
     """
-    # Make a copy of the tour to avoid modifying the original
-    mutated_tour = tour.deepcopy()
+    # Make a copy of the route to avoid modifying the original
+    mutated_route = route.deepcopy()
     
-    # Select two distinct random indices in the tour
-    idx1, idx2 = random.sample(range(len(mutated_tour)), 2)
+    # Select two distinct random indices in the route
+    idx1, idx2 = random.sample(range(len(mutated_route)), 2)
     
     # Swap the cities at the selected indices
-    mutated_tour[idx1], mutated_tour[idx2] = mutated_tour[idx2], mutated_tour[idx1]
+    mutated_route[idx1], mutated_route[idx2] = mutated_route[idx2], mutated_route[idx1]
     
     # Ensure that all cities are visited exactly once
-    mutated_set = set(mutated_tour)
-    for city in tour:
+    mutated_set = set(mutated_route)
+    for city in route:
         if city not in mutated_set:
-            mutated_tour.append(city)
+            mutated_route.append(city)
             break
     
-    return mutated_tour
+    return mutated_route
 
 def inversion_mutation(route):
     '''

@@ -16,7 +16,7 @@ from tqdm import trange
 areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
 geo_gain_matrix = generate_matrix(0.8, areas)
 initializer = create_population(areas_list=areas)
-evaluator = evaluate_population(geo_gain_matrix)
+evaluator = evaluate_population(geo_matrix=geo_gain_matrix)
 elite_func = get_n_elites(3)
 selection_pressure = 5
 xover = order_xover

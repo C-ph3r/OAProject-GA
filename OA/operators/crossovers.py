@@ -20,7 +20,7 @@ def order_xover(p1,p2):
     c2 = [-1 for i in p1]
 
     #Choosing size of the middle belt
-    size_middle_belt = random.randint(1, len(p1)//2 -1)
+    size_middle_belt = random.randint(1, (len(p1)//2)-1)
 
 
     #Assigning the middle belt to children
@@ -47,6 +47,8 @@ def order_xover(p1,p2):
             from_1.pop(0)
 
     return c1,c2
+
+print(order_xover(['A', 'B', 'C', 'D', 'E'], ['Z', 'Y', 'X', 'W', 'V']))
 
 def position_xover(p1,p2):
     '''

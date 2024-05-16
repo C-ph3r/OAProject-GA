@@ -2,7 +2,7 @@ import random
 import numpy as np
 import math
 
-def tournament_selection(pop, pop_fit, ts=1):
+def tournament_selection(pop:list, pop_fit:list, ts=1):
     '''
     Tournament selection algorithm
     
@@ -26,7 +26,7 @@ def tournament_selection(pop, pop_fit, ts=1):
     return pop[pool[best]]
 
 
-def SUS_selection(pop, pop_fit, n_sel = 1):
+def SUS_selection(pop:list, pop_fit:list, n_sel = 1):
     '''
     Stochastic Universal Sampling (SUS) selection algorithm
     
@@ -57,7 +57,7 @@ def SUS_selection(pop, pop_fit, n_sel = 1):
     return selected
 
 
-def boltzmann_selection(pop, pop_fit, temperature = 0.5):
+def boltzmann_selection(pop:list, pop_fit:list, temperature = 0.5):
     '''
     Boltzmann Selection algorithm for selecting individuals based on entropy
     
