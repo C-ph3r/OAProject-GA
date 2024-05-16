@@ -5,3 +5,4 @@ individual_validator: OK
 can_it_skip_KS: OK
 create_population: OK
 evaluate_population: OK
+tournament_selection: OK
