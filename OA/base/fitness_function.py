@@ -1,6 +1,8 @@
 import sys
 sys.path.insert(0, '..')
 
+from copy import deepcopy
+
 import pandas as pd
 from base.individual_validator import individual_validator, can_it_skip_KS
 
@@ -33,7 +35,8 @@ def individual_fitness(route:list, geo_matrix:pd.DataFrame) -> int:
     if individual_validator(route):
         # In case the solution is valid
         if can_it_skip_KS(route):
-            route_skip = route.remove('KS')
+            route_skip = deepcopy(route)
+            route_skip.remove('KS')
             return max(route_total_geo(route, geo_matrix), route_total_geo(route_skip, geo_matrix))
         else:
             return route_total_geo(route, geo_matrix)

@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '..')
 
 import random
-from individual_validator import individual_validator
+from base.individual_validator import individual_validator
 from copy import deepcopy
 
 '''

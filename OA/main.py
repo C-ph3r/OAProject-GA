@@ -15,7 +15,7 @@ from tqdm import trange
 # Stationary parameters
 areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
 geo_gain_matrix = generate_matrix(0.8, areas)
-initializer = create_population(areas_list=areas)
+initializer = create_population(areas=areas)
 evaluator = evaluate_population(geo_matrix=geo_gain_matrix)
 selection_pressure = 5
 xover = order_xover
