@@ -3,3 +3,5 @@ generate_route: OK. shuffles correctly and returns ['D', shuffled, 'D']
 generate_possible_route: OK. Returns routes like generate_route
 individual_validator: OK
 can_it_skip_KS: OK
+create_population: OK
+evaluate_population: OK
