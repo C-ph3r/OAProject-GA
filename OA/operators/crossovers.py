@@ -48,7 +48,6 @@ def order_xover(p1,p2):
 
     return c1,c2
 
-print(order_xover(['A', 'B', 'C', 'D', 'E'], ['Z', 'Y', 'X', 'W', 'V']))
 
 def position_xover(p1,p2):
     '''
