@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '..')
+from base.individual_validator import individual_validator
 import numpy as np
 import random
 
@@ -20,7 +23,7 @@ def order_xover(p1,p2):
     c2 = [-1 for i in p1]
 
     #Choosing size of the middle belt
-    size_middle_belt = random.randint(1, (len(p1)//2)-1)
+    size_middle_belt = random.randint(1, len(p1)//2 -1)
 
 
     #Assigning the middle belt to children
@@ -46,9 +49,13 @@ def order_xover(p1,p2):
             c2[i] = from_1[0]
             from_1.pop(0)
 
-    return c1,c2
+    #Checking child validity, if any isn't valid, substitute it by the parent
+    if not individual_validator(c1):
+        c1 = p1
+    if not individual_validator(c2):
+        c2 = p2
 
-print(order_xover(['A', 'B', 'C', 'D', 'E'], ['Z', 'Y', 'X', 'W', 'V']))
+    return c1,c2
 
 def position_xover(p1,p2):
     '''
@@ -60,7 +67,7 @@ def position_xover(p1,p2):
 
     
     Parameters:
-    p1 (list): first parent on which to perform crossover
+    p1 (list): firstj parent on which to perform crossover
     p2 (list): second parent on which to perform crossover
 
     output:
@@ -95,6 +102,82 @@ def position_xover(p1,p2):
             c2[i] = values_p1[0]
             values_p1.pop(0)
 
+    #Checking child validity, if any isn't valid, substitute it by the parent
+    if not individual_validator(c1):
+        c1 = p1
+    if not individual_validator(c2):
+        c2 = p2
+
+    return c1,c2
+
+def cycle_xover(p1, p2):
+    '''
+    Performs cycle crossover on two parent solutions. Steps:
+    1 - Identify cycles between the two parents.
+    2 - Alternate cycle elements between the two children.
+    3 - Fill remaining positions with the corresponding elements from the opposite parent.
+
+    Parameters:
+    p1 (list): First parent on which to perform crossover.
+    p2 (list): Second parent on which to perform crossover.
+
+    Returns:
+    c1, c2 (lists): Crossed over children, with same length as the parents.
+    '''
+
+
+    c1 = [-1 for _ in p1]
+    c2 = [-1 for _ in p1]
+
+    def cycle(p1, p2):
+        temp1 = []
+        pos = 0
+
+        # Start the cycle with the first element of p1
+        while True:
+            if p1[pos] in temp1:
+                break
+            
+            # Append the current value to the cycle
+            temp1.append(p1[pos])
+            # Fetch the index of the corresponding value in p2
+            pos = p1.index(p2[pos])
+        
+        return temp1
+
+    indices_handled = set()
     
+    for i in range(len(p1)):
+        if c1[i] == -1:
+            # Find the cycle starting from index i
+            cycle_elements = cycle(p1, p2)
+            
+            # Fill the offspring based on the cycle elements
+            for elem in cycle_elements:
+                idx = p1.index(elem)
+                c1[idx] = p1[idx]
+                c2[idx] = p2[idx]
+                indices_handled.add(idx)
+
+            # Alternate filling the offspring by swapping the roles of parents
+            for elem in cycle_elements:
+                idx = p1.index(elem)
+                if c1[idx] == -1:
+                    c1[idx] = p2[idx]
+                if c2[idx] == -1:
+                    c2[idx] = p1[idx]
+
+    # Fill the rest of the offspring with remaining elements
+    for i in range(len(p1)):
+        if c1[i] == -1:
+            c1[i] = p2[i]
+        if c2[i] == -1:
+            c2[i] = p1[i]
+
+    #Checking child validity, if any isn't valid, substitute it by the parent
+    if not individual_validator(c1):
+        c1 = p1
+    if not individual_validator(c2):
+        c2 = p2
 
     return c1,c2
