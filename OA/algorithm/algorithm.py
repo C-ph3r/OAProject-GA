@@ -9,7 +9,7 @@ import random
 
 
 def GA(initializer, evaluator, selector, crossover, mutator,
-       pop_size, n_gens, p_xo, p_m, n_elites, elite_func, geo_matrix,
+       pop_size, n_gens, p_xo, p_m, elite_func, geo_matrix,
        verbose=False, log_path=None, elitism=False, seed=0):
 
     geo_matrix = pd.DataFrame(geo_matrix)
