@@ -15,7 +15,7 @@ def swap_mutation(route):
     - mutated_route: List representing the mutated route
     """
     # Make a copy of the route to avoid modifying the original
-    mutated_route = route.deepcopy()
+    mutated_route = deepcopy(route)
     
     # Select two distinct random indices in the route
     idx1, idx2 = random.sample(range(len(mutated_route)), 2)

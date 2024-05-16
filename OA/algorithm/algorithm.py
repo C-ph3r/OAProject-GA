@@ -57,7 +57,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
         # 4.4. If elitism is used, apply it
         if elitism:
-            while len(offspring) > pop_size-n_elites:
+            while len(offspring) > pop_size:
                 offspring.pop()
                 elite, best_fit = elite_func(population, pop_fit)
                 offspring[-1] = elite # adding the elite, unchanged into the offspring population
@@ -72,7 +72,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         new_elite, new_fit = elite_func(population, pop_fit)
 
         if verbose:
-            print(f'     {gen}       |       {new_elite} - {new_fit}       ')
+            print(f'     {gen}       |       {new_elite[0]} - {new_fit[0]}       ')
             print('-' * 32)
 
         if log_path is not None:

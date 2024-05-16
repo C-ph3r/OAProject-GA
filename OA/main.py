@@ -24,13 +24,11 @@ selector =  tournament_selection
 log_path = 'log\testing_logging.csv'
 
 # evolution based parameters
-pop_size = 20
-n_gens = 10
-p_xo = 0.8
-p_m = 0.3
+pop_size = 40
+n_gens = 100
+p_xo = 0.9
+p_m = 0.6
 n_elites = 2
-
-
 
 
 for seed in trange(10):
