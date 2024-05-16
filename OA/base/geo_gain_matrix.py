@@ -1,6 +1,5 @@
 import random
 import pandas as pd
-import numpy as np
 
 def generate_matrix(probability_positive_gain:int, areas:list) -> pd.DataFrame:
     '''

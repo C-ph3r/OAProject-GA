@@ -9,7 +9,7 @@ def individual_validator(route:list) -> bool:
         return False
     
     # Condition 2: City Storerooms (CS) cannot be visited right after Queen's Gardens (QG)
-    if 'QG' in route and 'CS' in route[route.index('QG')+1:]:
+    if  route[route.index('QG')+1] == 'CS':
         return False
     
     # Condition 3: Resting Grounds (RG) can only be reached in the last half of the session.
@@ -32,3 +32,4 @@ def can_it_skip_KS(route:list) -> bool:
         return True
     else:
         return False
+    

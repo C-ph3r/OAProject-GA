@@ -4,8 +4,8 @@ sys.path.insert(0, '..')
 import csv
 import numpy as np
 from copy import deepcopy
-from base.individual import *
 import pandas as pd
+import random
 
 
 def GA(initializer, evaluator, selector, crossover, mutator,
@@ -55,7 +55,6 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         while len(offspring) > pop_size:
             offspring.pop()
 
-
         # 4.4. If elitism is used, apply it
         if elitism:
             elite, best_fit = elite_func(population, pop_fit)
@@ -71,12 +70,13 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         new_elite, new_fit = elite_func(population, pop_fit)
 
         if verbose:
-            print(f'     {gen}       |       {new_fit}       ')
+            print(f'     {gen}       |       {new_elite} - {new_fit}       ')
             print('-' * 32)
 
         if log_path is not None:
             with open(log_path, 'a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([seed, gen, new_fit, new_elite])
+
 
     return population, pop_fit

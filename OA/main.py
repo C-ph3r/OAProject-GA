@@ -15,9 +15,8 @@ from tqdm import trange
 # Stationary parameters
 areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
 geo_gain_matrix = generate_matrix(0.8, areas)
-initializer = create_population(areas_list=areas)
+initializer = create_population(areas=areas)
 evaluator = evaluate_population(geo_matrix=geo_gain_matrix)
-elite_func = get_n_elites(3)
 selection_pressure = 5
 xover = order_xover
 mutator = inversion_mutation
@@ -26,7 +25,7 @@ log_path = 'log\testing_logging.csv'
 
 # evolution based parameters
 pop_size = 20
-n_gens = 100
+n_gens = 10
 p_xo = 0.8
 p_m = 0.3
 n_elites = 2
