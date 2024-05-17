@@ -12,7 +12,7 @@ def order_xover(p1,p2):
     3- Understand the characters that are already in each child, and those from the parents that are not yet in the child
     4- Assign the unused characters from parent 2 (in their original order), to child 1 and vice versa
 
-    Parameters:
+    input:
     p1 (list): first parent on which to perform crossover
     p2 (list): second parent on which to perform crossover
 
@@ -39,15 +39,16 @@ def order_xover(p1,p2):
     from_2 = [char for char in p2 if char not in belt_1]
 
     #Completing the lists with values from the other parent
-    for i in range(len(c1)):
-        if c1[i] == -1:
-            c1[i] = from_2[0]
-            from_2.pop(0)
-
-    for i in range(len(c2)):
-        if c2[i] == -1:
-            c2[i] = from_1[0]
-            from_1.pop(0)
+    while len(from_2) > 0:
+        for i in range(len(c1)):
+            if c1[i] == -1:
+                c1[i] = from_2[0]
+                from_2.pop(0)
+    while len(from_1) > 0:
+        for i in range(len(c2)):
+            if c2[i] == -1:
+                c2[i] = from_1[0]
+                from_1.pop(0)
 
     #Checking child validity, if any isn't valid, substitute it by the parent
     if not individual_validator(c1):
@@ -68,7 +69,7 @@ def position_xover(p1,p2):
     3 - Transfers the remaining values crossed over from p2 to c1 and p1 to c2
 
     
-    Parameters:
+    input:
     p1 (list): firstj parent on which to perform crossover
     p2 (list): second parent on which to perform crossover
 
@@ -119,11 +120,11 @@ def cycle_xover(p1, p2):
     2 - Alternate cycle elements between the two children.
     3 - Fill remaining positions with the corresponding elements from the opposite parent.
 
-    Parameters:
+    input:
     p1 (list): First parent on which to perform crossover.
     p2 (list): Second parent on which to perform crossover.
 
-    Returns:
+    output:
     c1, c2 (lists): Crossed over children, with same length as the parents.
     '''
 
