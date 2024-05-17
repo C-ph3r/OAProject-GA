@@ -39,15 +39,16 @@ def order_xover(p1,p2):
     from_2 = [char for char in p2 if char not in belt_1]
 
     #Completing the lists with values from the other parent
-    for i in range(len(c1)):
-        if c1[i] == -1:
-            c1[i] = from_2[0]
-            from_2.pop(0)
-
-    for i in range(len(c2)):
-        if c2[i] == -1:
-            c2[i] = from_1[0]
-            from_1.pop(0)
+    while len(from_2) > 0:
+        for i in range(len(c1)):
+            if c1[i] == -1:
+                c1[i] = from_2[0]
+                from_2.pop(0)
+    while len(from_1) > 0:
+        for i in range(len(c2)):
+            if c2[i] == -1:
+                c2[i] = from_1[0]
+                from_1.pop(0)
 
     #Checking child validity, if any isn't valid, substitute it by the parent
     if not individual_validator(c1):
