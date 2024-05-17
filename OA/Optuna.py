@@ -38,7 +38,7 @@ def objective(trial):
     solution = GA(initializer, evaluator, 
                   selector, crossover, mutator, 
                   pop_size, n_gens, crossover_rate, mutation_rate,
-                  elite_func, verbose=True, log_path=None, elitism=False, seed=42,
+                  elite_func, verbose=False, log_path=None, elitism=False, seed=42,
                   geo_matrix = geo_gain_matrix)
     
     # Evaluating the given solution
@@ -48,7 +48,6 @@ def objective(trial):
     return distance
 
 def optimize_optuna(n_trials):
-   print("hi")
 # Running and tunning parameters with Optuna optimization
    study = optuna.create_study(direction='maximize')
    study.optimize(lambda trial: objective(trial), n_trials=n_trials)
@@ -66,5 +65,4 @@ def optimize_optuna(n_trials):
    plt.legend()
    plt.show()
 
-
-print("Hwllo")
+optimize_optuna(2)
