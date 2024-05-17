@@ -183,3 +183,106 @@ def cycle_xover(p1, p2):
         c2 = p2
 
     return c1,c2
+
+
+
+def scx(p1, p2, geo_matrix):
+    '''
+    Performs Sequential Constructive Crossover on two parent solutions. Steps:
+    1 - Calls the generate_offspring function to generate the first offspring
+    2 - Calls the same function again to generate the second offspring
+
+    input:
+    p1 (list): First parent on which to perform crossover.
+    p2 (list): Second parent on which to perform crossover.
+    geo_matrix (matrix): Matrix of the geo gain from one city to another.
+
+    output:
+    offspring1, offspring2 (lists): Crossed over children, with same length as the parents.
+    '''
+
+    def next_city(current_city, unvisited, p1, p2, geo_matrix):
+        '''
+        Identifies the best next city to be appended to the offspring. Steps:
+        1 - Identifies the index of the current city on both of the parents
+        2 - Searches through the parents for the next city not already visited
+        3 - Compares the 2 options given by the 2 parents 
+
+        input:
+        current_city (string): Name of the current city.
+        unvisited (list): List of cities left to be visited.
+        p1 (list): First parent on which to perform crossover.
+        p2 (list): Second parent on which to perform crossover.
+        geo_matrix (matrix): Matrix of the geo gain from one city to another.
+
+        output:
+        next_city_p1/next_city_p2 (string): City to where it was consider best to go to next.
+        '''
+
+        # Get the indices of the current city in both parents
+        idx1 = p1.index(current_city)
+        idx2 = p2.index(current_city)
+
+        # Making adjustments in the parents, so that a solution can be returned in both
+        p1_search=p1[idx1:]+ p1[:idx1+1]
+        p2_search= p2[idx2:]+ p2[:idx2+1]
+
+        # Find the next unvisited city in parent 1 and parent 2
+        next_city_p1 = None
+        i= 0
+        while next_city_p1 is None:
+            if p1_search[i] in unvisited:
+                next_city_p1 = p1_search[i]
+            else:
+                i+=1
+        next_city_p2 = None
+        j=0
+        while next_city_p2 is None:
+            if p2_search[j] in unvisited:
+                next_city_p2 = p2_search[j]
+            else:
+                j+=1
+
+        # Choose the one city that yields higher geo gain
+        if geo_matrix.loc[current_city, next_city_p1] > geo_matrix.loc[current_city, next_city_p2]:
+            return next_city_p1
+        else:
+            return next_city_p2
+
+
+    def generate_offspring(start_parent, other_parent, geo_matrix):
+        '''
+        Generates a new offspring. Steps:
+        1 - Transfers the first city of the parents directly to the offspring
+        2 - Calls next_city function to define which is the best city to be transfered to the offspring
+        Repeats step 2 until the offspring is the same lenght as the parents
+
+        input:
+        start_parent (list): First parent on which to perform crossover (Gives the first city).
+        other_parent (list): Second parent on which to perform crossover.
+        geo_matrix (matrix): Matrix of the geo gain from one city to another.
+
+        output:
+        offspring (list): Crossed over child, with same length as the parents.
+        '''
+
+        # Start from the first city of start_parent
+        current_city = start_parent[0]
+        offspring = [current_city]
+        unvisited = set(start_parent) - {current_city}
+
+        while unvisited:
+            next_city_candidate = next_city(current_city, unvisited, start_parent, other_parent, geo_matrix)
+            if next_city_candidate is None:
+                print("error")
+            offspring.append(next_city_candidate)
+            unvisited.remove(next_city_candidate)
+            current_city = next_city_candidate
+
+        return offspring
+
+    # Generating two offsprings
+    offspring1 = generate_offspring(parent1, parent2, geo_matrix)
+    offspring2 = generate_offspring(parent2, parent1, geo_matrix)
+
+    return offspring1, offspring2
