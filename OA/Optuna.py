@@ -24,14 +24,17 @@ selection_pressure = 5
 # Lists to plot the model comparison
 fitness_scores = []
 
+#boltzmann_selection 
+# rgibnnm
+
 # Defining the objective function 
 def objective(trial):
     pop_size = trial.suggest_categorical('pop_size', [25, 50, 100])
     n_gens = trial.suggest_categorical('n_gens', [50, 100, 200])
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.7, 0.9)
-    selector= trial.suggest_categorical('selector', [SUS_selection, boltzmann_selection, tournament_selection])
-    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
+    selector= trial.suggest_categorical('selector', [SUS_selection, tournament_selection])
+    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation])
     crossover= trial.suggest_categorical('crossover', [order_xover, position_xover])
    
     # Running genetic algorithm with the different parameters
