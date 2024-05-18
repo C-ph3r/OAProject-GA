@@ -1,10 +1,9 @@
 import sys
 sys.path.insert(0, '..')
 from optuna.visualization import plot_optimization_history
-
 from base.population import create_population, evaluate_population
 from operators.selection_algorithms import SUS_selection, boltzmann_selection, tournament_selection
-from operators.crossovers import order_xover, position_xover, cycle_xover , scx
+from operators.crossovers import  position_xover, scx
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites_max
@@ -35,14 +34,14 @@ fitness_scores = []
 
 # Defining the objective function 
 def objective(trial):
-    pop_size = trial.suggest_categorical('pop_size', [25, 50, 100])
-    n_gens = trial.suggest_categorical('n_gens', [10,20,50, 100, 150])
+    pop_size = trial.suggest_categorical('pop_size', [25, 50,75, 100,150])
+    n_gens = trial.suggest_categorical('n_gens', [10,50, 100, 150])
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.6, 0.9)
     selector= trial.suggest_categorical('selector', [SUS_selection,  tournament_selection])
     mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation])
     crossover= trial.suggest_categorical('crossover', [ position_xover,scx])
-    n_elites = trial.suggest_int('n',1,3)
+    n_elites = trial.suggest_int('n',1,5)
 
     elite_func = get_n_elites_max(n_elites)
 
@@ -71,11 +70,16 @@ def optimize_optuna(n_trials):
    best_value = study.best_value
 
   
+
    # Plot the evolution of fitness values
    print("Best Parameters:", best_params)
    print("Best Distance:", best_value)
-   fig = plot_optimization_history(study)
-   fig.show()
-   
+   fig1 = plot_optimization_history(study)
+   fig1.show()
+
+   fig2 = (optuna.visualization.plot_param_importances(study))
+   fig2.show()
+
+
 
 optimize_optuna(15)
