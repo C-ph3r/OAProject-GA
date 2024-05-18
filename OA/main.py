@@ -45,4 +45,4 @@ for seed in trange(10):
       geo_matrix=geo_gain_matrix,
       verbose=True,
       log_path=None, elitism=None,
-      elite_func=get_n_elites_max(n_elites), seed=seed)
+      elite_func=get_n_elites_max(n_elites), plot=True, seed=seed)
