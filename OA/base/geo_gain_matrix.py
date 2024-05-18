@@ -42,8 +42,10 @@ def create_matrixes_file():
     with ExcelWriter('matrixes.xlsx', engine='openpyxl') as writer:
         # Write each matrix to a separate sheet
         for i, matrix in enumerate(matrixes):
-            sheet_name = f'Matrix_{i+1}'
+            sheet_name = f'{i+1}'
             matrix.to_excel(writer, sheet_name=sheet_name, index=True)
-            print(f'Written {sheet_name}')
-    return None
+            
+
+# note: the following line was run to create the matrixes used in Optuna.py
+#create_matrixes_file()
 

@@ -10,6 +10,7 @@ from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites_max
 import optuna
+import pandas as pd
 
 
 # Stationary parameters
@@ -19,8 +20,13 @@ selection_pressure = 5
 
 
 
-# Creating matrix list to have ground for comparision
-matrixes = [generate_matrix(0.8, areas) for i in range(15)]
+# Importing matrixes previously created, to have grounds for comparision
+matrixes_file = pd.ExcelFile("matrixes.xlsx")
+
+matrixes = []
+for i in range(15):
+    temp = pd.read_excel(matrixes_file,f"{i+1}", index_col=0)
+    matrixes.append(temp)
 
 # Lists to plot the model comparison
 fitness_scores = []
