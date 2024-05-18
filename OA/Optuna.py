@@ -26,11 +26,7 @@ for i in range(15):
     temp = pd.read_excel(matrixes_file,f"{i+1}", index_col=0)
     matrixes.append(temp)
 
-# Lists to plot the model comparison
-fitness_scores = []
 
-#boltzmann_selection 
-# rgibnnm
 
 # Defining the objective function 
 def objective(trial):
@@ -38,10 +34,10 @@ def objective(trial):
     n_gens = trial.suggest_categorical('n_gens', [10,50, 100, 150])
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.6, 0.9)
-    selector= trial.suggest_categorical('selector', [SUS_selection,  tournament_selection])
-    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation])
+    selector= trial.suggest_categorical('selector', [ boltzmann_selection])
+    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
     crossover= trial.suggest_categorical('crossover', [ position_xover,scx])
-    n_elites = trial.suggest_int('n',1,5)
+    n_elites = trial.suggest_int('n',1,10)
 
     elite_func = get_n_elites_max(n_elites)
 
@@ -52,7 +48,7 @@ def objective(trial):
         pop ,fit= GA(initializer, evaluator, 
                     selector, crossover, mutator, 
                     pop_size, n_gens, crossover_rate, mutation_rate,
-                    elite_func, verbose=False, log_path=None, elitism=True, seed=42,
+                    elite_func, verbose=True, log_path=None, elitism=True, seed=42,
                     geo_matrix = matrix)
         
         temp_list.append(max(fit))
@@ -82,4 +78,4 @@ def optimize_optuna(n_trials):
 
 
 
-optimize_optuna(15)
+optimize_optuna(1)

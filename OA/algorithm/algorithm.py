@@ -1,6 +1,7 @@
 import sys
 sys.path.insert(0, '..')
 from operators.crossovers import  scx
+from operators.mutators import rgibnnm
 import csv
 import numpy as np
 from copy import deepcopy
@@ -47,10 +48,12 @@ def GA(initializer, evaluator, selector, crossover, mutator,
                 o1, o2 = deepcopy(p1), deepcopy(p2)
 
             # 4.2.3. Mutating the offspring
-            if random.random() < p_m:
-                o1 = mutator(o1)
-            elif random.random() < p_m:
-                o2 = mutator(o2)
+            for o in [o1, o2]:
+                if random.random() < p_m:
+                    if mutator == rgibnnm:
+                        o = mutator(o, geo_matrix)
+                    else:
+                        o = mutator(o)
 
             # 4.2.4. Adding the offpring into the offspring population
             offspring.extend([o1, o2])
