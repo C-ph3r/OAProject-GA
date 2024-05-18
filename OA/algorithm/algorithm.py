@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, '..')
-
+from operators.crossovers import  scx
 import csv
 import numpy as np
 from copy import deepcopy
@@ -39,7 +39,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
             # 4.2.2. Choosing between crossover and reproduction
             if random.random() < p_xo:
-                if crossover == 'scx':
+                if crossover == scx:
                     o1, o2 = crossover(p1, p2, geo_matrix)
                 else:
                     o1, o2 = crossover(p1, p2)

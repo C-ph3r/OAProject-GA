@@ -4,7 +4,7 @@ from optuna.visualization import plot_optimization_history
 
 from base.population import create_population, evaluate_population
 from operators.selection_algorithms import SUS_selection, boltzmann_selection, tournament_selection
-from operators.crossovers import order_xover, position_xover, cycle_xover
+from operators.crossovers import order_xover, position_xover, cycle_xover , scx
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites_max
@@ -41,7 +41,7 @@ def objective(trial):
     crossover_rate = trial.suggest_float('crossover_rate', 0.6, 0.9)
     selector= trial.suggest_categorical('selector', [SUS_selection,  tournament_selection])
     mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation])
-    crossover= trial.suggest_categorical('crossover', [ position_xover])
+    crossover= trial.suggest_categorical('crossover', [ position_xover,scx])
     n_elites = trial.suggest_int('n',1,3)
 
     elite_func = get_n_elites_max(n_elites)
@@ -62,7 +62,6 @@ def objective(trial):
     return sum(temp_list)/len(temp_list)
 
 def optimize_optuna(n_trials):
-   print("hi")
 # Running and tunning parameters with Optuna optimization
    study = optuna.create_study(direction='maximize')
    study.optimize(lambda trial: objective(trial), n_trials=n_trials)

@@ -285,7 +285,12 @@ def scx(p1, p2, geo_matrix):
         return offspring
 
     # Generating two offsprings
-    offspring1 = generate_offspring(parent1, parent2, geo_matrix)
-    offspring2 = generate_offspring(parent2, parent1, geo_matrix)
+    offspring1 = generate_offspring(p1, p2, geo_matrix)
+    offspring2 = generate_offspring(p2, p1, geo_matrix)
+
+    if not individual_validator(offspring1):
+        offspring1 = p1
+    if not individual_validator(offspring2):
+        offspring2 = p2
 
     return offspring1, offspring2
