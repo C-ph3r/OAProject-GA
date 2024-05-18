@@ -3,7 +3,6 @@ sys.path.insert(0, '..')
 from optuna.visualization import plot_optimization_history
 
 from base.population import create_population, evaluate_population
-from base.geo_gain_matrix import generate_matrix
 from operators.selection_algorithms import SUS_selection, boltzmann_selection, tournament_selection
 from operators.crossovers import order_xover, position_xover, cycle_xover
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
