@@ -54,6 +54,7 @@ def objective(trial):
     return sum(temp_list)/len(temp_list)
 
 def optimize_optuna(n_trials):
+   print("hi")
 # Running and tunning parameters with Optuna optimization
    study = optuna.create_study(direction='maximize')
    study.optimize(lambda trial: objective(trial), n_trials=n_trials)
