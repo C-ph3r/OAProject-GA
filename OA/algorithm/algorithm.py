@@ -37,7 +37,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         while len(offspring) < pop_size:
             # 4.2.1. Selecting the parents
             if selector == boltzmann_selection:
-                temperature = 100 * (0.9 ** gen)
+                temperature = max(0.1, 100 * (0.9 ** gen))
                 p1 = selector(population, pop_fit, temperature)
                 p2 = selector(population, pop_fit, temperature)
             else:
@@ -54,34 +54,29 @@ def GA(initializer, evaluator, selector, crossover, mutator,
                 o1, o2 = deepcopy(p1), deepcopy(p2)
 
             # 4.2.3. Mutating the offspring
+            # Dynamic mutation rate (decrease over generations):
+            dyn_p_m = p_m * (1 - gen / n_gens)
+
             for o in [o1, o2]:
-                if random.random() < p_m:
+                if random.random() < dyn_p_m:
                     if mutator == rgibnnm:
                         o = mutator(o, geo_matrix)
                     else:
                         o = mutator(o)
 
-            # 4.2.4. Adding the offpring into the offspring population
-            offspring.extend([o1, o2])
+                if o not in offspring and o not in population:
+                    offspring.append(o)
 
-        # 4.3. Making sure offspring population doesnt exceed pop_size
-        while len(offspring) > pop_size:
-            offspring.pop()
+        # 4.3. Making sure offspring population doesnt exceed pop_size:
+        offspring = offspring[:pop_size]
 
-        # 4.4. If elitism is used, apply it
+        # 4.4. If elitism is used, apply it:
         if elitism:
             elite, best_fit = elite_func(population, pop_fit)
             if isinstance(elite[0], list):
-                offspring.extend(elite)  # If elite is a list of lists, extend offspring
+                offspring.extend(elite[:pop_size - len(offspring)])  # Ensure size limit
             else:
                 offspring.append(elite)
-
-
-        #4.4.1 Assuring that the offspring list has same size as parent
-        while len(offspring) > pop_size:
-            offspring.pop(0)
-
-        
 
         # 4.5. Replacing the current population with the offpsring population
         population = offspring
