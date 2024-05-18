@@ -12,7 +12,8 @@ def GA(initializer, evaluator, selector, crossover, mutator,
        pop_size, n_gens, p_xo, p_m, elite_func, geo_matrix,
        verbose=False, log_path=None, elitism=False, seed=0):
 
-    geo_matrix = pd.DataFrame(geo_matrix)
+    areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
+    geo_matrix = pd.DataFrame(geo_matrix,index=areas, columns=areas)
 
     # 1. Setting up the seed:
     random.seed(seed)

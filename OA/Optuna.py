@@ -31,6 +31,9 @@ for i in range(15):
 # Lists to plot the model comparison
 fitness_scores = []
 
+#boltzmann_selection 
+# rgibnnm
+
 # Defining the objective function 
 def objective(trial):
     pop_size = trial.suggest_categorical('pop_size', [25, 50, 100])
