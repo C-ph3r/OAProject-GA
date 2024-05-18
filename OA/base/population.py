@@ -20,7 +20,7 @@ def evaluate_population(geo_matrix):
     '''
     Returns a list of fitnesses
     '''
-
+    
     def pop_evaluation(population):
 
         return [individual_fitness(route, geo_matrix) for route in population]
