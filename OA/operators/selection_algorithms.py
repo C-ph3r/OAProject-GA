@@ -67,19 +67,14 @@ def boltzmann_selection(pop:list, pop_fit:list, temperature = 0.5):
         
     Output: list - Selected individual
     '''
-    pop_size = len(pop)
-
-    # Calculate the probability of selection for each individual
-    max_fit = max(pop_fit)
-    adjusted_fitness = [(fit - max_fit) / temperature for fit in pop_fit]
-
-    # Calculate Boltzmann probabilities for each individual
-    exp_fitness = [np.exp(fit) for fit in adjusted_fitness]
-    fitness_sum = sum(exp_fitness)
-    probabilities = [exp_fit / fitness_sum for exp_fit in exp_fitness]
-
-    # Perform selection based on Boltzmann probabilities
-    selected = random.choices(pop, weights=probabilities)[0]
+    pop_fit = np.array(pop_fit)
     
-    return selected
+    # Exponential fitness values scaled by temperature
+    scaled_fit = np.exp(pop_fit / temperature)
+    
+    # Boltzmann probabilities
+    probabilities = scaled_fit / np.sum(scaled_fit)
+    selected_index = np.random.choice(len(pop), p=probabilities)
+    
+    return pop[selected_index]
     

@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0, '..')
 from operators.crossovers import  scx
 from operators.mutators import rgibnnm
+from operators.selection_algorithms import boltzmann_selection
 import csv
 import numpy as np
 from copy import deepcopy
@@ -35,8 +36,13 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         # 4.2. While the offspring population is not full:
         while len(offspring) < pop_size:
             # 4.2.1. Selecting the parents
-            p1 = selector(population, pop_fit)
-            p2 = selector(population, pop_fit)
+            if selector == boltzmann_selection:
+                temperature = 100 * (0.9 ** gen)
+                p1 = selector(population, pop_fit, temperature)
+                p2 = selector(population, pop_fit, temperature)
+            else:
+                p1 = selector(population, pop_fit)
+                p2 = selector(population, pop_fit)
 
             # 4.2.2. Choosing between crossover and reproduction
             if random.random() < p_xo:

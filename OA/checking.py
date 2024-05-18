@@ -1,23 +1,18 @@
-import sys
-sys.path.insert(0, '..')
+from operators.selection_algorithms import boltzmann_selection
 
-from base.population import create_population, evaluate_population
-from operators.selection_algorithms import tournament_selection
-from base.geo_gain_matrix import generate_matrix
+population = ['A', 'B', 'C', 'D']
+fitnesses = [10, 20, 30, 40]
+initial_temperature = 100.0  # Higher initial temperature for more exploration
+cooling_rate = 0.90
+generations = 10
 
-areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
-matrix = generate_matrix(0.8, areas)
-initializer = create_population(areas_list=areas)
-evaluator = evaluate_population(matrix)
+selected_individuals = []
 
-# 2. Initializing the gen 0 population:
-population = initializer(4)
+for gen in range(generations):
+    temperature = initial_temperature * (cooling_rate ** gen)
+    selected_individual = boltzmann_selection(population, fitnesses, temperature)
+    selected_individuals.append(selected_individual)
+    print(f'Generation {gen + 1}: Selected individual: {selected_individual}, Temperature: {temperature:.2f}')
 
-# 3. Evaluating the current population:
-pop_fit = evaluator(population)
-
-# 4.2. While the offspring population is not full:
-p1 = tournament_selection(population, pop_fit)
-p2 = tournament_selection(population, pop_fit)
-
-print(p1, p2)
+# Print the selected individuals over all generations
+print(f'Selected individuals over {generations} generations: {selected_individuals}')
