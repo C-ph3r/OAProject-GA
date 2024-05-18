@@ -38,7 +38,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
             # 4.2.2. Choosing between crossover and reproduction
             if random.random() < p_xo:
-                o1, o2 = crossover(p1, p2)
+                if crossover == 'scx':
+                    o1, o2 = crossover(p1, p2, geo_matrix)
+                else:
+                    o1, o2 = crossover(p1, p2)
             else:
                 o1, o2 = deepcopy(p1), deepcopy(p2)
 
@@ -57,10 +60,18 @@ def GA(initializer, evaluator, selector, crossover, mutator,
 
         # 4.4. If elitism is used, apply it
         if elitism:
-            while len(offspring) > pop_size:
-                offspring.pop()
-                elite, best_fit = elite_func(population, pop_fit)
-                offspring[-1] = elite # adding the elite, unchanged into the offspring population
+            elite, best_fit = elite_func(population, pop_fit)
+            if elite.ndim == 1:
+                offspring.append(elite) # adding the elite, unchanged into the offspring population
+            else:
+                offspring.extend(elite)
+
+
+        #4.4.1 Assuring that the offspring list has same size as parent
+        while len(offspring) > pop_size:
+            offspring.pop(0)
+
+        
 
         # 4.5. Replacing the current population with the offpsring population
         population = offspring

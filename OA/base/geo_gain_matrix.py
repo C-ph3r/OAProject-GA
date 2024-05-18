@@ -30,3 +30,6 @@ def generate_matrix(probability_positive_gain:int, areas:list) -> pd.DataFrame:
         matrix.loc['G', 'FC'] = round(random.uniform(-100, 100), 2)
 
     return matrix
+
+
+

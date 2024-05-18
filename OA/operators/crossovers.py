@@ -39,12 +39,18 @@ def order_xover(p1,p2):
     from_2 = [char for char in p2 if char not in belt_1]
 
     #Completing the lists with values from the other parent
+    
+    
     for i in range(len(c1)):
+        if len(from_2) == 0:
+            break
         if c1[i] == -1:
             c1[i] = from_2[0]
             from_2.pop(0)
 
     for i in range(len(c2)):
+        if len(from_1) == 0:
+            break
         if c2[i] == -1:
             c2[i] = from_1[0]
             from_1.pop(0)
@@ -57,7 +63,6 @@ def order_xover(p1,p2):
 
     return c1,c2
 
-print(order_xover(['A', 'B', 'C', 'D', 'E'], ['Z', 'Y', 'X', 'W', 'V']))
 
 def position_xover(p1,p2):
     '''
