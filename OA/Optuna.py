@@ -5,10 +5,10 @@ from optuna.visualization import plot_optimization_history
 from base.population import create_population, evaluate_population
 from base.geo_gain_matrix import generate_matrix
 from operators.selection_algorithms import SUS_selection, boltzmann_selection, tournament_selection
-from operators.crossovers import order_xover, position_xover, cycle_xover, pmx_crossover
+from operators.crossovers import order_xover, position_xover, cycle_xover
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
-from utils.utils import get_n_elites
+from utils.utils import get_n_elites_max
 import optuna
 
 
@@ -36,7 +36,7 @@ def objective(trial):
     crossover= trial.suggest_categorical('crossover', [ position_xover])
     n_elites = trial.suggest_int('n',1,3)
 
-    elite_func = get_n_elites(n_elites)
+    elite_func = get_n_elites_max(n_elites)
 
     temp_list = []
     for matrix in matrixes:

@@ -1,5 +1,6 @@
 import random
 import pandas as pd
+from pandas import ExcelWriter
 
 def generate_matrix(probability_positive_gain:int, areas:list) -> pd.DataFrame:
     '''
@@ -32,4 +33,17 @@ def generate_matrix(probability_positive_gain:int, areas:list) -> pd.DataFrame:
     return matrix
 
 
+#Creating the matrixes that will be used for parameter tunning
+def create_matrixes_file():
+    areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
+    matrixes = [generate_matrix(0.8, areas) for i in range(15)]
+
+    #Writing those matrixes into an excel file
+    with ExcelWriter('matrixes.xlsx', engine='openpyxl') as writer:
+        # Write each matrix to a separate sheet
+        for i, matrix in enumerate(matrixes):
+            sheet_name = f'Matrix_{i+1}'
+            matrix.to_excel(writer, sheet_name=sheet_name, index=True)
+            print(f'Written {sheet_name}')
+    return None
 

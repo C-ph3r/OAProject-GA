@@ -61,10 +61,10 @@ def GA(initializer, evaluator, selector, crossover, mutator,
         # 4.4. If elitism is used, apply it
         if elitism:
             elite, best_fit = elite_func(population, pop_fit)
-            if elite.ndim == 1:
-                offspring.append(elite) # adding the elite, unchanged into the offspring population
+            if isinstance(elite[0], list):
+                offspring.extend(elite)  # If elite is a list of lists, extend offspring
             else:
-                offspring.extend(elite)
+                offspring.append(elite)
 
 
         #4.4.1 Assuring that the offspring list has same size as parent

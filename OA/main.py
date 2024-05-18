@@ -6,7 +6,7 @@ from base.population import create_population, evaluate_population
 from operators.selection_algorithms import SUS_selection, tournament_selection, boltzmann_selection
 from operators.crossovers import order_xover
 from operators.mutators import inversion_mutation, rgibnnm
-from utils.utils import get_n_elites
+from utils.utils import get_n_elites_max
 from base.geo_gain_matrix import generate_matrix
 
 from tqdm import trange
@@ -28,7 +28,7 @@ pop_size = 40
 n_gens = 100
 p_xo = 0.9
 p_m = 0.6
-n_elites = 2
+n_elites = 10
 
 
 for seed in trange(10):
@@ -44,5 +44,5 @@ for seed in trange(10):
       p_m=p_m,
       geo_matrix=geo_gain_matrix,
       verbose=True,
-      log_path=None, elitism=True,
-      elite_func=get_n_elites(n_elites), seed=seed)
+      log_path=None, elitism=None,
+      elite_func=get_n_elites_max(n_elites), seed=seed)
