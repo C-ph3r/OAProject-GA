@@ -10,7 +10,9 @@ def get_n_elites_max(n):
 
         # getting the fitnesses of the best n elites:
 
-        return [population[i] for i in bests_i], [pop_fit[i] for i in bests_i]  # returning the list of elites and their list of fitnesses
+        # returning the list of elites and their list of fitnesses
+        return [population[i] for i in bests_i], [pop_fit[i] for i in bests_i]  
+    
 
     return get_elite
 

@@ -808,7 +808,9 @@ def run_experiment(mutator, crossover, selector):
     Outputs: pop_fit (list) - List of fitnesses to plot
     '''
     areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
-    geo_matrix = generate_matrix(0.8, areas)
+    #geo_matrix = generate_matrix(0.8, areas)
+
+    geo_matrix = pd.read_excel("matrixes.xlsx", sheet_name= "1")
 
     # Run the GA with specified parameters
     population, pop_fit = GA(

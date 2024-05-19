@@ -77,7 +77,7 @@ def GA(initializer, evaluator, selector, crossover, mutator,
                     o1, o2 = crossover(p1, p2, geo_matrix)
                 else:
                     o1, o2 = crossover(p1, p2)
-            else:
+            else:   
                 o1, o2 = deepcopy(p1), deepcopy(p2)
 
             # 4.2.3. Mutating the offspring
