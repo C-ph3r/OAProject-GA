@@ -115,77 +115,6 @@ def position_xover(p1,p2):
 
     return c1,c2
 
-def cycle_xover(p1, p2):
-    '''
-    Performs cycle crossover on two parent solutions. Steps:
-    1 - Identify cycles between the two parents.
-    2 - Alternate cycle elements between the two children.
-    3 - Fill remaining positions with the corresponding elements from the opposite parent.
-
-    input:
-    p1 (list): First parent on which to perform crossover.
-    p2 (list): Second parent on which to perform crossover.
-
-    output:
-    c1, c2 (lists): Crossed over children, with same length as the parents.
-    '''
-
-
-    c1 = [-1 for _ in p1]
-    c2 = [-1 for _ in p1]
-
-    def cycle(p1, p2):
-        temp1 = []
-        pos = 0
-
-        # Start the cycle with the first element of p1
-        while True:
-            if p1[pos] in temp1:
-                break
-            
-            # Append the current value to the cycle
-            temp1.append(p1[pos])
-            # Fetch the index of the corresponding value in p2
-            pos = p1.index(p2[pos])
-        
-        return temp1
-
-    indices_handled = set()
-    
-    for i in range(len(p1)):
-        if c1[i] == -1:
-            # Find the cycle starting from index i
-            cycle_elements = cycle(p1, p2)
-            
-            # Fill the offspring based on the cycle elements
-            for elem in cycle_elements:
-                idx = p1.index(elem)
-                c1[idx] = p1[idx]
-                c2[idx] = p2[idx]
-                indices_handled.add(idx)
-
-            # Alternate filling the offspring by swapping the roles of parents
-            for elem in cycle_elements:
-                idx = p1.index(elem)
-                if c1[idx] == -1:
-                    c1[idx] = p2[idx]
-                if c2[idx] == -1:
-                    c2[idx] = p1[idx]
-
-    # Fill the rest of the offspring with remaining elements
-    for i in range(len(p1)):
-        if c1[i] == -1:
-            c1[i] = p2[i]
-        if c2[i] == -1:
-            c2[i] = p1[i]
-
-    #Checking child validity, if any isn't valid, substitute it by the parent
-    if not individual_validator(c1):
-        c1 = p1
-    if not individual_validator(c2):
-        c2 = p2
-
-    return c1,c2
 
 def scx_xover(p1, p2, geo_matrix):
     '''
@@ -296,59 +225,91 @@ def scx_xover(p1, p2, geo_matrix):
 
 def pmx_xover(p1, p2):
     '''
-    Performs Partially Mapped Crossover (PMX) on two parent solutions.
-    
-    Steps:
-    1 - Chooses two random crossover points.
-    2 - Copies the segment between the crossover points from p1 to offspring1 and from p2 to offspring2.
-    3 - Fills the remaining positions in offspring1 with elements from p2 and in offspring2 with elements from p1, ensuring no duplicates by mapping through the crossover segment.
-    
-    Input:
-    p1 (list): First parent on which to perform crossover.
-    p2 (list): Second parent on which to perform crossover.
-    
-    Output:
-    offspring1, offspring2 (lists): Crossed over children, with same length as the parents.
+    Performs partially mapped crossover on 2 parents. Steps:
+    1: Select a random swath of consecutive alleles
+    2: Copy the swath from Parent 1 to Child 1 and from Parent 2 to Child 2
+    3: Fill the rest of each child according to the mapping created in fill_child
+    4: Complete the children with the genes from the opposite parent
+
+    input:
+    p1 (list): first parent on which to perform crossover
+    p2 (list): second parent on which to perform crossover
+
+    output:
+    c1, c2 (lists): Crossed over children, with the same length as the parents
     '''
+    size = len(p1)
+    c1 = [-1] * size
+    c2 = [-1] * size
+    
+    # Choosing indexes for the middle belt
+    start, end = sorted(random.sample(range(size), 2))
+    
+    # Assigning the belt to the children
+    c1[start:end + 1] = p1[start:end + 1]
+    c2[start:end + 1] = p2[start:end + 1]
+    # Helper function to fill the child according to PMX mapping rules
+    def fill_child(child, p1, p2, start, end):
+        '''
+        Fills children according to PMX mapping rules, iterates until all the values in the middle swath of P1 are in C2, and vice versa.
+        Steps:
+        1: Iterates through middle swath to check which values are already in each child
+        2: If the value is not in the child, follows the mapping until an unfilled value is found
+        3: Fills child with the correct mapped value
 
-    # Choose crossover points
-    position_1 = random.randint(0, len(p1) - 2)
-    position_2 = random.randint(position_1 + 1, len(p1) - 1)
+        input: 
+        child (list): Child route to be inputted
+        p1 (list): parent donor of the middle swath
+        p2 (list): other parent route
+        start (int): index at which the middle swath starts
+        end (int): index at which the middle swath ends
 
-    # Initialize offspring with -1 (indicating empty spots)
-    offspring1 = [-1] * len(p1)
-    offspring2 = [-1] * len(p1)
+        output:
+        child (list): Inputted child
+        '''
+        for i in range(start, end + 1):
+            if p2[i] not in child:
+                value = p2[i]
+                pos = i
+                while child[pos] != -1:
+                    value = p2[p1.index(value)]
+                    pos = p1.index(value)
+                child[pos] = p2[i]
+        return child
+    
+    # Fill the remaining positions in Child 1
+    c1 = fill_child(c1, p1, p2, start, end)
+    # Fill the remaining positions in Child 2
+    c2 = fill_child(c2, p2, p1, start, end)
+    
 
-    #  Copy the segment between crossover points from parents to offspring
-    offspring1[position_1:position_2] = p1[position_1:position_2]
-    offspring2[position_1:position_2] = p2[position_1:position_2]
+    from_p2 = list(set(p2)- set(c1))
+    from_p1 = list(set(p1) - set(c2))
+    # Fill the rest of the positions with Parent 2's alleles for Child 1
+    i = 0
+    j =0
+    while len(from_p2) >0:
+        if -1 not in c1:
+            break
+        if c1[i] == -1:
+            c1[i] = from_p2[0]
+            from_p2.pop(0)
+        i += 1
+    
+    # Fill the rest of the positions with Parent 1's alleles for Child 2
+    while(len(from_p1)) >0:
+        if -1 not in c2:
+            break
+        if c2[j] == -1:
+            c2[j] = from_p1[0]
+            from_p1.pop(0)
+        j += 1
 
-    # function to map values from parent to offspring
-    def map_parent_to_offspring(offspring, parent, segment_start, segment_end):
-        for i in range(len(parent)):
-            if i >= segment_start and i < segment_end:
-                continue
-            city = parent[i]
-            initial_city = city
-            while city in offspring:
-                pos = offspring.index(city)
-                city = parent[pos]
-                if city == initial_city:
-                    break  # Avoid infinite loop
-            offspring[i] = city
+    # Checking child validity, if any isn't valid, substitute it by the parent
+    if not individual_validator(c1):
+        c1 = p1
+    if not individual_validator(c2):
+        c2 = p2
 
-    # Fill the remaining positions in the offspring
-    map_parent_to_offspring(offspring1, p2, position_1, position_2)
-    map_parent_to_offspring(offspring2, p1, position_1, position_2)
-
-    # Final check to ensure no -1 is left in the offspring
-    def finalize_offspring(offspring, parent):
-        for i in range(len(offspring)):
-            if offspring[i] == -1:
-                offspring[i] = parent[i]
-
-    finalize_offspring(offspring1, p2)
-    finalize_offspring(offspring2, p1)
-
-    return offspring1, offspring2
+    return c1, c2
 

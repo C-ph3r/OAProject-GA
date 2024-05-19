@@ -1,9 +1,8 @@
 import sys
 sys.path.insert(0, '..')
-from optuna.visualization import plot_optimization_history
 from base.population import create_population, evaluate_population
 from operators.selection_algorithms import SUS_selection, boltzmann_selection, tournament_selection
-from operators.crossovers import  position_xover, scx
+from operators.crossovers import  position_xover, scx_xover, pmx_xover, order_xover
 from operators.mutators import inversion_mutation, rgibnnm, swap_mutation
 from algorithm.algorithm import GA
 from utils.utils import get_n_elites_max
@@ -30,13 +29,13 @@ for i in range(15):
 
 # Defining the objective function 
 def objective(trial):
-    pop_size = trial.suggest_categorical('pop_size', [25, 50,75, 100,150])
-    n_gens = trial.suggest_categorical('n_gens', [10,50, 100, 150])
+    pop_size = trial.suggest_categorical('pop_size', [25,  100,150])
+    n_gens = trial.suggest_categorical('n_gens', [10, 150])
     mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
     crossover_rate = trial.suggest_float('crossover_rate', 0.6, 0.9)
-    selector= trial.suggest_categorical('selector', [ boltzmann_selection])
+    selector= trial.suggest_categorical('selector', [ SUS_selection, boltzmann_selection, tournament_selection])
     mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
-    crossover= trial.suggest_categorical('crossover', [ position_xover,scx])
+    crossover= trial.suggest_categorical('crossover', [ order_xover])
     n_elites = trial.suggest_int('n',1,10)
 
     elite_func = get_n_elites_max(n_elites)
@@ -48,7 +47,7 @@ def objective(trial):
         pop ,fit= GA(initializer, evaluator, 
                     selector, crossover, mutator, 
                     pop_size, n_gens, crossover_rate, mutation_rate,
-                    elite_func, verbose=True, log_path=None, elitism=True, seed=42,
+                    elite_func, verbose=False, log_path=None, elitism=True, seed=42,
                     geo_matrix = matrix)
         
         temp_list.append(max(fit))
@@ -70,7 +69,7 @@ def optimize_optuna(n_trials):
    # Plot the evolution of fitness values
    print("Best Parameters:", best_params)
    print("Best Distance:", best_value)
-   fig1 = plot_optimization_history(study)
+   fig1 = optuna.visualization.plot_optimization_history(study)
    fig1.show()
 
    fig2 = (optuna.visualization.plot_param_importances(study))
@@ -78,4 +77,4 @@ def optimize_optuna(n_trials):
 
 
 
-optimize_optuna(1)
+optimize_optuna(15)
