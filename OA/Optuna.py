@@ -30,13 +30,13 @@ for i in range(15):
 # Defining the objective function 
 def objective(trial):
     pop_size = trial.suggest_categorical('pop_size', [25,  100,150])
-    n_gens = trial.suggest_categorical('n_gens', [10, 150])
-    mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
-    crossover_rate = trial.suggest_float('crossover_rate', 0.6, 0.9)
+    n_gens = trial.suggest_categorical('n_gens', [10, 100,150])
+    mutation_rate = trial.suggest_categorical('mutation_rate',[ 0.01,0.05, 0.1])
+    crossover_rate = trial.suggest_categorical('crossover_rate',[ 0.6,0.7, 0.8])
     selector= trial.suggest_categorical('selector', [ SUS_selection, boltzmann_selection, tournament_selection])
-    mutator= trial.suggest_categorical('mutator', [swap_mutation, inversion_mutation, rgibnnm])
-    crossover= trial.suggest_categorical('crossover', [ order_xover])
-    n_elites = trial.suggest_int('n',1,10)
+    mutator= trial.suggest_categorical('mutator', [inversion_mutation, rgibnnm, swap_mutation])
+    crossover= trial.suggest_categorical('crossover', [ position_xover, scx_xover, pmx_xover])
+    n_elites = trial.suggest_int('n',1,3)
 
     elite_func = get_n_elites_max(n_elites)
 
