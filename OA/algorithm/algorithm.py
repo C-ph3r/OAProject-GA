@@ -14,6 +14,28 @@ import matplotlib.pyplot as plt
 def GA(initializer, evaluator, selector, crossover, mutator,
        pop_size, n_gens, p_xo, p_m, elite_func, geo_matrix,
        verbose=False, log_path=None, elitism=False, plot=False, seed=0):
+    '''
+    Run the Genetic Algorithm to solve a maximisation problem
+
+    Inputs: initializer - Function to initialize the population
+            evaluator - Function to evaluate the fitness of the population
+            selector - Function for selection operation
+            crossover - Function for crossover operation
+            mutator - Function for mutation operation
+            pop_size (int) - Size of the population
+            n_gens (int) - Number of generations
+            p_xo (float) - Probability of crossover
+            p_m (float) - Probability of mutation
+            elite_func - Function to determine elite individuals
+            geo_matrix (DataFrame) - Geographic matrix for evaluations
+            verbose (bool) - Whether to print verbose output
+            log_path (str) - Path to log file
+            elitism (bool) - Whether to use elitism
+            seed (int) - Random seed for reproducibility
+            plot (bool) - Whether to plot the results
+
+    Outputs: pop, pop_fit - Final population and their fitness values.
+    '''
 
     areas = ['D', 'FC', 'G', 'QS', 'QG', 'CS', 'KS', 'RG', 'DV', 'SN']
     geo_matrix = pd.DataFrame(geo_matrix,index=areas, columns=areas)

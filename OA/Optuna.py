@@ -33,9 +33,9 @@ def objective(trial):
     n_gens = trial.suggest_categorical('n_gens', [10, 100,150])
     mutation_rate = trial.suggest_categorical('mutation_rate',[ 0.01,0.05, 0.1])
     crossover_rate = trial.suggest_categorical('crossover_rate',[ 0.6,0.7, 0.8])
-    selector= trial.suggest_categorical('selector', [ SUS_selection, boltzmann_selection, tournament_selection])
+    selector= trial.suggest_categorical('selector', [SUS_selection, boltzmann_selection, tournament_selection])
     mutator= trial.suggest_categorical('mutator', [inversion_mutation, rgibnnm, swap_mutation])
-    crossover= trial.suggest_categorical('crossover', [ position_xover, scx_xover, pmx_xover])
+    crossover= trial.suggest_categorical('crossover', [position_xover, scx_xover, pmx_xover])
     n_elites = trial.suggest_int('n',1,3)
 
     elite_func = get_n_elites_max(n_elites)
@@ -77,4 +77,4 @@ def optimize_optuna(n_trials):
 
 
 
-optimize_optuna(15)
+optimize_optuna(1)
