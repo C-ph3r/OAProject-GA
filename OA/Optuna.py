@@ -29,10 +29,10 @@ for i in range(15):
 
 # Defining the objective function 
 def objective(trial):
-    pop_size = trial.suggest_categorical('pop_size', [25,  100,150])
-    n_gens = trial.suggest_categorical('n_gens', [10, 100,150])
-    mutation_rate = trial.suggest_categorical('mutation_rate',[ 0.01,0.05, 0.1])
-    crossover_rate = trial.suggest_categorical('crossover_rate',[ 0.6,0.7, 0.8])
+    pop_size = trial.suggest_categorical('pop_size', [25, 50, 100, 150])
+    n_gens = trial.suggest_categorical('n_gens', [50, 100,150])
+    mutation_rate = trial.suggest_float('mutation_rate', 0.01, 0.1, log=True)
+    crossover_rate = trial.suggest_categorical('crossover_rate',[0.2,0,3,0.7,0.8])
     selector= trial.suggest_categorical('selector', [ SUS_selection, boltzmann_selection, tournament_selection])
     mutator= trial.suggest_categorical('mutator', [inversion_mutation, rgibnnm, swap_mutation])
     crossover= trial.suggest_categorical('crossover', [ position_xover, scx_xover, pmx_xover])
@@ -47,7 +47,7 @@ def objective(trial):
         pop ,fit= GA(initializer, evaluator, 
                     selector, crossover, mutator, 
                     pop_size, n_gens, crossover_rate, mutation_rate,
-                    elite_func, verbose=False, log_path=None, elitism=True, seed=42,
+                    elite_func, verbose=True, log_path=None, elitism=True, seed=42,
                     geo_matrix = matrix)
         
         temp_list.append(max(fit))
@@ -77,4 +77,4 @@ def optimize_optuna(n_trials):
 
 
 
-optimize_optuna(15)
+optimize_optuna(20)
