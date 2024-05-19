@@ -4,7 +4,7 @@ sys.path.insert(0, '..')
 from algorithm.algorithm import GA
 from base.population import create_population, evaluate_population
 from operators.selection_algorithms import SUS_selection, tournament_selection, boltzmann_selection
-from operators.crossovers import order_xover
+from operators.crossovers import order_xover, pmx_xover
 from operators.mutators import rgibnnm, inversion_mutation, swap_mutation
 from utils.utils import get_n_elites_max
 from base.geo_gain_matrix import generate_matrix
@@ -18,9 +18,9 @@ geo_gain_matrix = generate_matrix(0.8, areas)
 initializer = create_population(areas=areas)
 evaluator = evaluate_population(geo_matrix=geo_gain_matrix)
 selection_pressure = 5
-xover = order_xover
+xover = pmx_xover
 mutator = rgibnnm
-selector =  boltzmann_selection
+selector =  SUS_selection
 log_path = 'log\testing_logging.csv'
 
 # evolution based parameters

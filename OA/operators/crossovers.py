@@ -187,9 +187,7 @@ def cycle_xover(p1, p2):
 
     return c1,c2
 
-
-
-def scx(p1, p2, geo_matrix):
+def scx_xover(p1, p2, geo_matrix):
     '''
     Performs Sequential Constructive Crossover on two parent solutions. Steps:
     1 - Calls the generate_offspring function to generate the first offspring
@@ -294,3 +292,63 @@ def scx(p1, p2, geo_matrix):
         offspring2 = p2
 
     return offspring1, offspring2
+
+
+def pmx_xover(p1, p2):
+    '''
+    Performs Partially Mapped Crossover (PMX) on two parent solutions.
+    
+    Steps:
+    1 - Chooses two random crossover points.
+    2 - Copies the segment between the crossover points from p1 to offspring1 and from p2 to offspring2.
+    3 - Fills the remaining positions in offspring1 with elements from p2 and in offspring2 with elements from p1, ensuring no duplicates by mapping through the crossover segment.
+    
+    Input:
+    p1 (list): First parent on which to perform crossover.
+    p2 (list): Second parent on which to perform crossover.
+    
+    Output:
+    offspring1, offspring2 (lists): Crossed over children, with same length as the parents.
+    '''
+
+    # Choose crossover points
+    position_1 = random.randint(0, len(p1) - 2)
+    position_2 = random.randint(position_1 + 1, len(p1) - 1)
+
+    # Initialize offspring with -1 (indicating empty spots)
+    offspring1 = [-1] * len(p1)
+    offspring2 = [-1] * len(p1)
+
+    #  Copy the segment between crossover points from parents to offspring
+    offspring1[position_1:position_2] = p1[position_1:position_2]
+    offspring2[position_1:position_2] = p2[position_1:position_2]
+
+    # function to map values from parent to offspring
+    def map_parent_to_offspring(offspring, parent, segment_start, segment_end):
+        for i in range(len(parent)):
+            if i >= segment_start and i < segment_end:
+                continue
+            city = parent[i]
+            initial_city = city
+            while city in offspring:
+                pos = offspring.index(city)
+                city = parent[pos]
+                if city == initial_city:
+                    break  # Avoid infinite loop
+            offspring[i] = city
+
+    # Fill the remaining positions in the offspring
+    map_parent_to_offspring(offspring1, p2, position_1, position_2)
+    map_parent_to_offspring(offspring2, p1, position_1, position_2)
+
+    # Final check to ensure no -1 is left in the offspring
+    def finalize_offspring(offspring, parent):
+        for i in range(len(offspring)):
+            if offspring[i] == -1:
+                offspring[i] = parent[i]
+
+    finalize_offspring(offspring1, p2)
+    finalize_offspring(offspring2, p1)
+
+    return offspring1, offspring2
+
