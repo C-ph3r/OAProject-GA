@@ -57,7 +57,9 @@ def SUS_selection(pop:list, pop_fit:list, n_sel = 1):
     return selected
 
 
-def boltzmann_selection(pop:list, pop_fit:list, temperature = 0.5):
+import numpy as np
+
+def boltzmann_selection(pop, pop_fit, temperature=0.5):
     '''
     Boltzmann Selection algorithm for selecting individuals based on entropy
     
@@ -67,12 +69,27 @@ def boltzmann_selection(pop:list, pop_fit:list, temperature = 0.5):
         
     Output: list - Selected individual
     '''
-    # Calculate Boltzmann probabilities for each individual
-    fitness_sum = sum(math.exp(fit / temperature) for fit in pop_fit)
-    probabilities = [math.exp(fit / temperature) / fitness_sum for fit in pop_fit]
+    pop_fit = np.array(pop_fit)
+
+    # Normalize fitness values to avoid overflow
+    max_fit = np.max(pop_fit)
+    if max_fit > 0:
+        norm_fit = pop_fit / max_fit
+    else:
+        norm_fit = pop_fit
     
-    # Perform selection based on Boltzmann probabilities
-    selected = random.choices(pop, weights=probabilities)[0]
+    # Exponential fitness values scaled by temperature
+    scaled_fit = np.exp(norm_fit / max(temperature, 1e-10))  # Avoid division by zero or very small temperature
     
-    return selected
+    # Boltzmann probabilities
+    probabilities = scaled_fit / np.sum(scaled_fit)
+    
+    # Ensure probabilities do not contain NaN values
+    if np.any(np.isnan(probabilities)):
+        probabilities = np.ones_like(probabilities) / len(probabilities)
+    
+    selected_index = np.random.choice(len(pop), p=probabilities)
+    
+    return pop[selected_index]
+
     

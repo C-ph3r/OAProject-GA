@@ -55,9 +55,12 @@ def rgibnnm(route, geo_gain_matrix):
     '''
     Function that performs RGIBNNM mutation on a given route.
 
-    Inputs: route (list) - Order in which the player visits the areas
-            geo_gain_matrix (list of lists) - Geo gain per pair of areas
-    Outputs: mutated_route (list) - A mutated version of the input after inversion mutation
+    Inputs:
+    - route (list): Order in which the player visits the areas.
+    - geo_gain_matrix (DataFrame): Geo gain per pair of areas.
+    
+    Outputs:
+    - mutated_route (list): A mutated version of the input after inversion mutation.
     '''
     validity = False
 
@@ -67,10 +70,10 @@ def rgibnnm(route, geo_gain_matrix):
         areaA = route[indA]
 
         # Finding the one with the maximum geo gain from it
-        areaB = max((c for c in route if c != areaA), key=lambda c: geo_gain_matrix[areaA][c])
+        areaB = max((c for c in route if c != areaA), key=lambda c: geo_gain_matrix.loc[areaA, c])
 
         # From the areas with most geo gain from it
-        range_of_cities = [c for c in route if abs(c - areaB) >= np.mean(geo_gain_matrix[areaA]) and c != areaA]
+        range_of_cities = [c for c in route if geo_gain_matrix.loc[areaA, c] >= np.mean(geo_gain_matrix.loc[areaA, :]) and c != areaA]
 
         if range_of_cities:
             # Select one area to swap with areaA
@@ -79,7 +82,7 @@ def rgibnnm(route, geo_gain_matrix):
             mutated[route.index(areaA)] = areaC
             mutated[route.index(areaC)] = areaA
         
-        validity = individual_validator(mutated)
+            validity = individual_validator(mutated)
 
     return mutated
 
