@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, '..')
-from operators.crossovers import  scx_xover, pmx_xover
+from operators.crossovers import  scx_xover
 from operators.mutators import rgibnnm
 from operators.selection_algorithms import boltzmann_selection
 import csv
